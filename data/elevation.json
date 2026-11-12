@@ -18,6 +18,25 @@
     "sampleCount": 1241,
     "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
   },
+  "koktokay": {
+    "low": {
+      "coordinates": [
+        90.0035886,
+        47.1885452
+      ],
+      "meters": 1671
+    },
+    "high": {
+      "coordinates": [
+        90.0901024,
+        47.1669622
+      ],
+      "meters": 3071
+    },
+    "bearing": 99,
+    "sampleCount": 342,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
   "beidahu": {
     "low": {
       "coordinates": [
@@ -94,23 +113,80 @@
     "sampleCount": 422,
     "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
   },
-  "koktokay": {
+  "jiangjunshan": {
     "low": {
       "coordinates": [
-        90.0035886,
-        47.1885452
+        88.1423094,
+        47.8104654
       ],
-      "meters": 1671
+      "meters": 847
     },
     "high": {
       "coordinates": [
-        90.0901024,
-        47.1669622
+        88.1679387,
+        47.8283762
       ],
-      "meters": 3071
+      "meters": 1313
     },
-    "bearing": 99,
-    "sampleCount": 342,
+    "bearing": 50,
+    "sampleCount": 324,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "yabuli": {
+    "low": {
+      "coordinates": [
+        128.4499007,
+        44.7743551
+      ],
+      "meters": 455
+    },
+    "high": {
+      "coordinates": [
+        128.427448,
+        44.7423097
+      ],
+      "meters": 1366
+    },
+    "bearing": -131,
+    "sampleCount": 339,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "alpine": {
+    "low": {
+      "coordinates": [
+        115.783726,
+        40.521761
+      ],
+      "meters": 906
+    },
+    "high": {
+      "coordinates": [
+        115.8136566,
+        40.5589126
+      ],
+      "meters": 2179
+    },
+    "bearing": 35,
+    "sampleCount": 1167,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "fulong": {
+    "low": {
+      "coordinates": [
+        115.2993467,
+        40.9765788
+      ],
+      "meters": 1294
+    },
+    "high": {
+      "coordinates": [
+        115.3080422,
+        40.9609455
+      ],
+      "meters": 1709
+    },
+    "bearing": -179,
+    "sampleCount": 445,
     "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
   },
   "yunding": {
@@ -151,42 +227,23 @@
     "sampleCount": 255,
     "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
   },
-  "jiangjunshan": {
+  "wanda": {
     "low": {
       "coordinates": [
-        88.1423094,
-        47.8104654
+        127.4811038,
+        42.1110279
       ],
-      "meters": 847
+      "meters": 842
     },
     "high": {
       "coordinates": [
-        88.1679387,
-        47.8283762
+        127.4878573,
+        42.0987006
       ],
-      "meters": 1313
+      "meters": 1213
     },
-    "bearing": 50,
-    "sampleCount": 324,
-    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
-  },
-  "fulong": {
-    "low": {
-      "coordinates": [
-        115.2993467,
-        40.9765788
-      ],
-      "meters": 1294
-    },
-    "high": {
-      "coordinates": [
-        115.3080422,
-        40.9609455
-      ],
-      "meters": 1709
-    },
-    "bearing": 114,
-    "sampleCount": 666,
+    "bearing": -117,
+    "sampleCount": 236,
     "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
   },
   "jinshanling": {
@@ -246,61 +303,156 @@
     "sampleCount": 192,
     "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
   },
-  "wanda": {
+  "silkroad": {
     "low": {
       "coordinates": [
-        127.4811038,
-        42.1110279
+        87.4134896,
+        43.4430605
       ],
-      "meters": 842
+      "meters": 1854
     },
     "high": {
       "coordinates": [
-        127.4878573,
-        42.0987006
+        87.4642371,
+        43.406075
       ],
-      "meters": 1213
+      "meters": 2939
     },
-    "bearing": -117,
-    "sampleCount": 236,
+    "bearing": 127,
+    "sampleCount": 247,
     "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
   },
-  "meilingu": {
+  "galaxy": {
     "low": {
       "coordinates": [
-        118.2689076,
-        41.6804531
+        115.3016208,
+        40.9982438
       ],
-      "meters": 1105
+      "meters": 1327
     },
     "high": {
       "coordinates": [
-        118.258522,
-        41.6656769
+        115.3163515,
+        40.9968591
       ],
-      "meters": 1582
+      "meters": 1632
     },
-    "bearing": -149,
-    "sampleCount": 277,
+    "bearing": 88,
+    "sampleCount": 221,
     "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
   },
-  "yabuli": {
+  "nanshan": {
     "low": {
       "coordinates": [
-        128.4499007,
-        44.7743551
+        116.8539489,
+        40.3307965
       ],
-      "meters": 455
+      "meters": 87
     },
     "high": {
       "coordinates": [
-        128.427448,
-        44.7423097
+        116.8558717,
+        40.3245264
       ],
-      "meters": 1366
+      "meters": 243
     },
-    "bearing": -131,
-    "sampleCount": 339,
+    "bearing": 170,
+    "sampleCount": 170,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "miaoxiangshan": {
+    "low": {
+      "coordinates": [
+        125.883399,
+        43.9577649
+      ],
+      "meters": 282
+    },
+    "high": {
+      "coordinates": [
+        125.8859672,
+        43.9509296
+      ],
+      "meters": 466
+    },
+    "bearing": 169,
+    "sampleCount": 92,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "huaibei": {
+    "low": {
+      "coordinates": [
+        116.6557111,
+        40.444326
+      ],
+      "meters": 142
+    },
+    "high": {
+      "coordinates": [
+        116.6456033,
+        40.4469782
+      ],
+      "meters": 309
+    },
+    "bearing": -68,
+    "sampleCount": 89,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "yuyang": {
+    "low": {
+      "coordinates": [
+        117.1385847,
+        40.0773506
+      ],
+      "meters": 74
+    },
+    "high": {
+      "coordinates": [
+        117.1440585,
+        40.0663654
+      ],
+      "meters": 314
+    },
+    "bearing": 164,
+    "sampleCount": 44,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "shijinglong": {
+    "low": {
+      "coordinates": [
+        115.9621419,
+        40.5224316
+      ],
+      "meters": 526
+    },
+    "high": {
+      "coordinates": [
+        115.9594826,
+        40.5307681
+      ],
+      "meters": 820
+    },
+    "bearing": -26,
+    "sampleCount": 29,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "jundushan": {
+    "low": {
+      "coordinates": [
+        116.3234675,
+        40.2348426
+      ],
+      "meters": 105
+    },
+    "high": {
+      "coordinates": [
+        116.3250804,
+        40.2423455
+      ],
+      "meters": 344
+    },
+    "bearing": -7,
+    "sampleCount": 33,
     "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
   }
 }

@@ -91,7 +91,7 @@ function closeResort(){
  isOpen=false;
  $('resort-overlay').hidden=true;
  $('scene-frame').src='about:blank'; // release WebGL map and DEM tiles
- document.body.classList.remove('in-scene');
+ document.body.classList.remove('in-scene');warm();
  renderPins();
 }
 $('btn-back').addEventListener('click',closeResort);
@@ -124,7 +124,29 @@ fetch('./data/coverage.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).the
     cell.classList.toggle('has-gis',e.state==='ready_unverified');
   }
 }).catch(e=>console.info('[Snow Atlas] Coverage not available:',e.message));
-map.on('load',()=>{fitChina();renderPins();});
+const routeCache=new Map();
+window.snowAtlasRoute=function(id){
+ if(!resorts.some(r=>r.id===id))return Promise.reject(Error('Unknown resort'));
+ if(!routeCache.has(id))routeCache.set(id,fetch('./data/resorts/'+id+'.geojson?v=atlas24',{cache:'force-cache'}).then(r=>{if(!r.ok)throw Error(r.status);return r.json();}).catch(e=>{routeCache.delete(id);throw e;}));
+ return routeCache.get(id);
+};
+let pending=[...resorts],done=0,failed=0,workers=0;
+function warm(){
+ if(document.hidden || isOpen || navigator.connection?.saveData || /(^|-)2g/.test(navigator.connection?.effectiveType||''))return;
+ const box=$('warmup'),bar=$('warm-bar'),msg=$('warm-text');
+ if(!pending.length)return;
+ box.hidden=false;bar.max=resorts.length;
+ const update=()=>{bar.value=done;msg.textContent='雪场线路预载 '+done+' / '+resorts.length+(failed?' · '+failed+' 家进入时重试':'');};
+ update();
+ while(workers<2 && pending.length){workers++;(async()=>{
+   while(!isOpen && !document.hidden && pending.length){
+     const r=pending.shift();try{await window.snowAtlasRoute(r.id);done++;}catch{failed++;}update();
+   }
+   workers--;if(!pending.length&&!workers)setTimeout(()=>box.hidden=true,1800);
+ })();}
+}
+document.addEventListener('visibilitychange',warm);
+map.on('load',()=>{fitChina();renderPins();setTimeout(warm,500);});
 map.on('move',renderPins);
 map.on('zoomend',()=>{needsLayout=true;renderPins();});
 map.on('moveend',renderPins);

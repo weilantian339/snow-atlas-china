@@ -4,6 +4,7 @@
   'use strict';
   const entries = window.SNOW_ATLAS_RESORTS || [];
   const requestedId = new URLSearchParams(window.location.search).get('id') || 'wanda';
+  if(entries.length && !entries.some(r=>r.id===requestedId)){location.replace('./index.html');return;}
   const resort = entries.find(r => r.id === requestedId) || entries.find(r => r.id === 'wanda') || {id:'wanda',name:'长白山万达',region:'吉林',center:[127.4938,42.103]};
   document.querySelector('.masthead h1').textContent = resort.name;
   document.querySelector('.subline').textContent = resort.region + ' · CHINA';
@@ -160,7 +161,7 @@
     }
     vegetationButton.setAttribute('aria-pressed',String(vegetationEnabled));
     vegetationButtonText.textContent=!forestLoaded?'植被：缺数据':vegetationEnabled?'植被：开':'植被：关';
-    vegetationButton.title=forestLoaded ? (resort.id==='wanda'?'低矮林冠示意：位置依据OSM，3–6米树冠高度为视觉示意，非实测树高或雪道宽度':'OSM林区纹理（非实地核验）· 点击切换') : '林地数据暂不可用';
+    vegetationButton.title=forestLoaded ? (resort.id==='wanda'?'低矮林冠示意：位置依据OSM，3–6米树冠高度为视觉示意，非实测树高或雪道宽度':'公开林地范围和低矮林冠示意，非实测树位或雪道宽度') : '林地数据暂不可用';
   };
   vegetationButton.addEventListener('click',()=>{vegetationEnabled=!vegetationEnabled;setForestVisibility();});
   function framePolygon(center,halfKm){
@@ -187,10 +188,14 @@
   function installLandscapeLayers(){
     const osmAttribution='<a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors (ODbL)</a>';
     map.addSource('snow-surface',{type:'geojson',data:framePolygon(resort.center,Math.min(18,(resort.searchRadiusKm||5)*2.5))});
-    map.addSource(vegSourceName,{type:'geojson',data:emptyGeojson(),attribution:osmAttribution});
+    map.addSource(vegSourceName,{type:'geojson',data:emptyGeojson(),attribution:osmAttribution+' · <a href="https://esa-worldcover.org/en/data-access">ESA WorldCover 2021 v200 (CC BY 4.0)</a>'});
     map.addLayer({id:'woodland-underlay',type:'fill',source:vegSourceName,
       paint:{'fill-color':'#819b88','fill-opacity':['interpolate',['linear'],['zoom'],9,0.12,12,0.20,15,0.28]}});
-    if(resort.id==='wanda'){map.addSource('wanda-canopies',{type:'geojson',data:'./data/wanda-canopies.geojson'});map.addLayer({id:'wanda-low-canopy',type:'fill-extrusion',source:'wanda-canopies',minzoom:12.8,
+    {map.addSource('wanda-canopies',{type:'geojson',data:resort.id==='wanda'?'./data/wanda-canopies.geojson':emptyGeojson()});
+    if(resort.id!=='wanda')fetch('./data/crowns/'+resort.id+'.json?v=atlas24').then(r=>r.json()).then(rows=>{
+      const features=rows.map(([x,y,h])=>{const ring=[];for(let i=0;i<6;i++){const a=i*Math.PI/3;ring.push([x+Math.cos(a)*h/(111200*Math.cos(y*Math.PI/180)),y+Math.sin(a)*h/111200]);}ring.push(ring[0]);return {type:'Feature',properties:{height:h},geometry:{type:'Polygon',coordinates:[ring]}};});map.getSource('wanda-canopies').setData({type:'FeatureCollection',features});
+    }).catch(()=>{});
+    map.addLayer({id:'wanda-low-canopy',type:'fill-extrusion',source:'wanda-canopies',minzoom:12.8,
       paint:{'fill-extrusion-color':'#245240','fill-extrusion-height':['get','height'],'fill-extrusion-base':0,'fill-extrusion-opacity':0.82,'fill-extrusion-vertical-gradient':true}});}
     setForestVisibility();
     // Texture is not 3D tree geometry: far less GPU load than thousands of tree meshes.
@@ -207,7 +212,7 @@
       const polygons=data.features.filter(f=>f?.geometry && (f.geometry.type==='Polygon'||f.geometry.type==='MultiPolygon'));
       forestCount=polygons.length;forestLoaded=forestCount>0;
       map.getSource(vegSourceName).setData({type:'FeatureCollection',features:polygons});
-      byId('vegetation-status').textContent=forestLoaded ? `林区 ${forestCount} · OSM待核验` : '无已测绘林区';
+      byId('vegetation-status').textContent=forestLoaded ? `林区 ${forestCount} · 林冠位置示意` : '无已测绘林区';
     }catch(err){
       byId('vegetation-status').textContent='林地数据暂不可用';
       console.info('[Snow Atlas] No optional forest mask for '+resort.id+' ('+err.message+')');
@@ -234,11 +239,10 @@
         'line-width': ['interpolate',['linear'],['zoom'],10,1.7,13,3.4,16,5.4],
         'line-opacity': 0.95
       }});
-    map.addLayer({id: 'lift-casing', type: 'line', source: 'lifts',
-      paint: {'line-color': '#fffaf5', 'line-width': ['interpolate',['linear'],['zoom'],10,3.5,16,7.2]}});
-    map.addLayer({id: 'lift-lines', type: 'line', source: 'lifts',
-      paint: {'line-color': '#e7894c', 'line-width': ['interpolate',['linear'],['zoom'],10,1.8,16,3.6], 'line-dasharray': [2.5,1.1]}});
-    map.setLayoutProperty('lift-lines','visibility','none');map.setLayoutProperty('lift-casing','visibility','none');
+    // A continuous scale-aware route remains legible between the elevated spans.
+    const joins={'line-join':'round','line-cap':'round'};
+    map.addLayer({id:'lift-casing',type:'line',source:'lifts',layout:joins,paint:{'line-color':'#fff1d7','line-width':['interpolate',['linear'],['zoom'],10,4,14,5.5,17,7]}});
+    map.addLayer({id:'lift-lines',type:'line',source:'lifts',layout:joins,paint:{'line-color':'#9e5429','line-width':['interpolate',['linear'],['zoom'],10,2,14,3,17,4]}});
     map.addSource('lift-structures',{type:'geojson',data:emptyGeojson()});
     map.addLayer({id:'lift-structures-3d',type:'fill-extrusion',source:'lift-structures',paint:{'fill-extrusion-color':['match',['get','part'],'cable','#8d6841','beam','#818d91','#65767d'],'fill-extrusion-height':['get','top'],'fill-extrusion-base':['get','base'],'fill-extrusion-opacity':1,'fill-extrusion-vertical-gradient':true}});
     map.addSource('selected-piste',{type:'geojson',data:emptyGeojson()});
@@ -269,16 +273,24 @@
       const lon=dx/(111200*Math.cos(y*Math.PI/180)),lat=dy/111200;
       features.push({type:'Feature',properties:{part,base,top},geometry:{type:'Polygon',coordinates:[[[x-lon,y-lat],[x+lon,y-lat],[x+lon,y+lat],[x-lon,y+lat],[x-lon,y-lat]]]}});
     };
-    for(const f of data.lifts.features){
+    const aerial=data.lifts.features.filter(f=>['chair_lift','gondola','mixed_lift','cable_car'].includes(f.properties.aerialway));
+    for(const f of aerial){
       const cs=f.geometry.coordinates;let walked=0,next=0;
       for(let i=1;i<cs.length;i++){
         const a=cs[i-1],b=cs[i],sx=111200*Math.cos((a[1]+b[1])*Math.PI/360),dx=(b[0]-a[0])*sx,dy=(b[1]-a[1])*111200,len=Math.hypot(dx,dy);if(!len)continue;
-        const nx=-dy/len*.5/sx,ny=dx/len*.5/111200;
-        features.push({type:'Feature',properties:{part:'cable',base:10.8,top:11.2},geometry:{type:'Polygon',coordinates:[[[a[0]+nx,a[1]+ny],[b[0]+nx,b[1]+ny],[b[0]-nx,b[1]-ny],[a[0]-nx,a[1]-ny],[a[0]+nx,a[1]+ny]]]}});
-        while(next<=walked+len){const t=(next-walked)/len,x=a[0]+(b[0]-a[0])*t,y=a[1]+(b[1]-a[1])*t;polygon(x,y,.65,.65,'tower',0,11);polygon(x,y,3,.4,'beam',10.4,11.3);next+=160;}walked+=len;
+        const ux=dx/len,uy=dy/len;
+        while(next<=walked+len){const t=(next-walked)/len,x=a[0]+(b[0]-a[0])*t,y=a[1]+(b[1]-a[1])*t;polygon(x,y,1.45,1.45,'tower',0,16.6);
+          const corners=[[-5,-1],[5,-1],[5,1],[-5,1],[-5,-1]].map(([u,v])=>[x+(-uy*u+ux*v)/sx,y+(ux*u+uy*v)/111200]);
+          features.push({type:'Feature',properties:{part:'beam',base:15.4,top:17.2},geometry:{type:'Polygon',coordinates:[corners]}});
+          next+=125;}walked+=len;
       }
     }
     map.getSource('lift-structures').setData({type:'FeatureCollection',features});
+    try{
+      map.addLayer(window.snowAtlasCables(map,aerial,resort.center));
+      const air=['in',['get','aerialway'],['literal',['chair_lift','gondola','mixed_lift','cable_car']]];
+      for(const id of ['lift-lines','lift-casing'])map.setPaintProperty(id,'line-opacity',['interpolate',['linear'],['zoom'],12,1,15,['case',air,0.12,0.86]]);
+    }catch(error){console.warn('Using continuous lift route fallback',error);}
   }
 
   function installNearby(){
@@ -348,9 +360,14 @@
   }
   async function loadLocalGIS() {
     // Maintainers can periodically import reviewed OSM/official data as static local GeoJSON.
-    const rsp = await fetch('./data/resorts/' + encodeURIComponent(resort.id) + '.geojson', {cache:'no-cache'});
+    if(window.parent!==window && document.referrer.startsWith(location.origin+'/') && window.parent.snowAtlasRoute){
+      const payload=await window.parent.snowAtlasRoute(resort.id);return splitRoutes(payload);
+    }
+    const rsp = await fetch('./data/resorts/' + encodeURIComponent(resort.id) + '.geojson?v=atlas24', {cache:'force-cache'});
     if (!rsp.ok) return null;
-    const payload = await rsp.json();
+    return splitRoutes(await rsp.json());
+  }
+  function splitRoutes(payload){
     if (payload.type !== 'FeatureCollection' || !Array.isArray(payload.features)) throw Error('本地GeoJSON格式错误');
     const pistes = emptyGeojson(), lifts = emptyGeojson();
     for (const feature of payload.features) {
