@@ -17,6 +17,8 @@
     // This BBOX is a provisional data-discovery envelope; NOT an official resort boundary.
     bbox: [42.085, 127.463, 42.124, 127.528], // south,west,north,east
   });
+  const elevationReady=fetch('./data/elevation.json').then(r=>r.ok?r.json():{}).then(d=>d[resort.id]||{}).catch(()=>({}));
+  let elevationInfo=null,sceneBearing=SETTINGS.bearing;
   const byId = (id) => document.getElementById(id);
   const emptyGeojson = () => ({type: 'FeatureCollection', features: []});
   const statusEl = byId('status-text'), dotEl = byId('status-dot'), countEl = byId('feature-count');
@@ -36,7 +38,7 @@
   } : {
     type: 'raster-dem', tiles: [SETTINGS.terrain], tileSize: 256,
     minzoom: 0, maxzoom: 14, encoding: 'terrarium',
-    bounds: [resort.center[0]-0.14,resort.center[1]-0.11,resort.center[0]+0.14,resort.center[1]+0.11],
+    bounds: [resort.center[0]-15/(111.2*Math.cos(resort.center[1]*Math.PI/180)),resort.center[1]-15/111.2,resort.center[0]+15/(111.2*Math.cos(resort.center[1]*Math.PI/180)),resort.center[1]+15/111.2],
     attribution: 'Terrain data: AWS Open Data elevation-tiles-prod'
   };
   const style = {
@@ -67,7 +69,18 @@
       maxTileCacheSize: 72,
       dragPan: true, dragRotate: true, pitchWithRotate: true,
       touchZoomRotate: true, scrollZoom: true,
-      fadeDuration: 140,
+      fadeDuration: 100,
+      transformRequest:(url)=>{
+        const m=url.match(/terrarium\/(\d+)\/(\d+)\/(\d+)\.png/);
+        if(m){
+          const z=+m[1],x=+m[2],y=+m[3],n=2**z;
+          const lon=(x+.5)/n*360-180,lat=Math.atan(Math.sinh(Math.PI*(1-2*(y+.5)/n)))*180/Math.PI;
+          const dx=(lon-resort.center[0])*111.2*Math.cos(resort.center[1]*Math.PI/180),dy=(lat-resort.center[1])*111.2;
+          const halfDiagonal=40075*Math.cos(lat*Math.PI/180)/n*.72;
+          if(Math.hypot(dx,dy)-halfDiagonal>15)return {url:new URL('./assets/flat-terrain.png',location.href).href};
+        }
+        return {url};
+      },
     });
   } catch (err) {
     setStatus(err.message || String(err), 'warn');
@@ -80,10 +93,8 @@
   map.getCanvas().addEventListener('contextmenu', (event) => event.preventDefault());
   let dataBounds = null;
   const reset = () => {
-    if (dataBounds) {
-      map.easeTo({bearing: SETTINGS.bearing, pitch: SETTINGS.pitch, duration:450});
-      setTimeout(()=>map.fitBounds(dataBounds,{padding:viewPadding(),duration:850,maxZoom:14.35}),470);
-    } else map.easeTo({center:SETTINGS.center,zoom:SETTINGS.zoom,pitch:SETTINGS.pitch,bearing:SETTINGS.bearing,duration:850});
+    if(dataBounds)map.fitBounds(dataBounds,{padding:viewPadding(),bearing:sceneBearing,pitch:SETTINGS.pitch,duration:850,maxZoom:14.2});
+    else map.easeTo({center:SETTINGS.center,zoom:SETTINGS.zoom,pitch:SETTINGS.pitch,bearing:sceneBearing,duration:850});
   };
   byId('btn-reset').addEventListener('click', reset);
   byId('btn-north').addEventListener('click', () => map.easeTo({bearing: 0, duration: 700}));
@@ -104,14 +115,14 @@
   let forestCount=0;
   let forestLoaded=false;
   const vegSourceName='mapped-woodland';
-  const forestLayerIds=['woodland-underlay','woodland-canopy'];
+  const forestLayerIds=['woodland-underlay','woodland-canopy','wanda-low-canopy'];
   const setForestVisibility=()=>{
     for (const id of forestLayerIds) {
       if(map.getLayer(id)) map.setLayoutProperty(id,'visibility',vegetationEnabled?'visible':'none');
     }
     vegetationButton.setAttribute('aria-pressed',String(vegetationEnabled));
     vegetationButtonText.textContent=!forestLoaded?'植被：缺数据':vegetationEnabled?'植被：开':'植被：关';
-    vegetationButton.title=forestLoaded ? 'OSM林区纹理（非实地核验）· 点击切换' : '林地数据暂不可用';
+    vegetationButton.title=forestLoaded ? (resort.id==='wanda'?'低矮林冠示意：位置依据OSM，3–6米树冠高度为视觉示意，非实测树高或雪道宽度':'OSM林区纹理（非实地核验）· 点击切换') : '林地数据暂不可用';
   };
   vegetationButton.addEventListener('click',()=>{vegetationEnabled=!vegetationEnabled;setForestVisibility();});
   function framePolygon(center,halfKm){
@@ -141,6 +152,8 @@
     map.addSource(vegSourceName,{type:'geojson',data:emptyGeojson(),attribution:osmAttribution});
     map.addLayer({id:'woodland-underlay',type:'fill',source:vegSourceName,
       paint:{'fill-color':'#819b88','fill-opacity':['interpolate',['linear'],['zoom'],9,0.12,12,0.20,15,0.28]}});
+    if(resort.id==='wanda'){map.addSource('wanda-canopies',{type:'geojson',data:'./data/wanda-canopies.geojson'});map.addLayer({id:'wanda-low-canopy',type:'fill-extrusion',source:'wanda-canopies',minzoom:12.8,
+      paint:{'fill-extrusion-color':'#245240','fill-extrusion-height':['get','height'],'fill-extrusion-base':0,'fill-extrusion-opacity':0.82,'fill-extrusion-vertical-gradient':true}});}
     setForestVisibility();
     // Texture is not 3D tree geometry: far less GPU load than thousands of tree meshes.
     loadTileTexture('./assets/snow-grain.png','snow-atlas-snow-grain','woodland-underlay');
@@ -302,9 +315,10 @@
     allNamesVisible = !allNamesVisible;
     if(allNamesVisible && labelData && !nameMarkers.length) installNameMarkers(labelData);
     labelsButton.setAttribute('aria-pressed', String(allNamesVisible));
-    labelsButtonText.textContent = allNamesVisible ? '隐藏全部名称' : '显示全部名称';
-    labelsButton.title = allNamesVisible ? '隐藏所有雪道和索道文字' : '显示所有雪道和索道文字（未命名对象标注OSM编号）';
+    labelsButtonText.textContent = allNamesVisible ? '隐藏名称 / 海拔' : '名称 / 海拔';
+    labelsButton.title = allNamesVisible ? '隐藏所有雪道和索道文字' : '显示已有名称及已测绘雪道的DEM近似高低点海拔；无名称线路不标注';
     updateNameVisibility();
+    updateElevationVisibility();
   });
   function midpointOnLine(coords) {
     if (!coords || coords.length < 2) return null;
@@ -334,11 +348,11 @@
         const p = f.properties || {};
         const name = String(p.name_zh || p.name || p.name_py || p.ref || '').trim();
         const at = midpointOnLine(f.geometry?.coordinates);
-        if (!at) continue;
+        if (!at || !name || /未命名|没有.*信息|暂无.*信息|unknown|unnamed/i.test(name)) continue;
         const el = document.createElement('span');
         el.className = 'geo-label ' + (kind === 'lift' ? 'geo-label-lift' : 'geo-label-piste');
         if (!name) el.classList.add('geo-label-unnamed');
-        el.textContent = name || ((kind === 'lift' ? '未命名索道' : '未命名雪道') + ' #' + (p.osm_id || f.id || '?'));
+        el.textContent = name;
         el.title = (kind === 'lift' ? '索道' : '雪道') + ' · OSM数据，尚未核对官方名称和线位';
         const marker = new maplibregl.Marker({element:el,anchor:'center',offset:[0,0]})
           .setLngLat(at).addTo(map);
@@ -346,6 +360,19 @@
       }
     }
     updateNameVisibility();
+  }
+
+  let elevationMarkers=[];
+  function updateElevationVisibility(){for(const marker of elevationMarkers)marker.getElement().style.display=allNamesVisible?'':'none';}
+  function installElevationMarkers(){
+    for(const marker of elevationMarkers)marker.remove();elevationMarkers=[];
+    if(!elevationInfo?.high||!elevationInfo?.low)return;
+    for(const [key,title] of [['high','▲ 雪道最高'],['low','▼ 雪道最低']]){
+      const info=elevationInfo[key],el=document.createElement('span');el.className='elevation-marker elevation-'+key;
+      el.textContent=title+' ≈ '+info.meters+' 米';el.title='已测绘雪道顶点的DEM采样极值，约20–30米地面分辨率；非官方雪场最高/最低点';
+      elevationMarkers.push(new maplibregl.Marker({element:el,anchor:'bottom'}).setLngLat(info.coordinates).addTo(map));
+    }
+    updateElevationVisibility();
   }
 
   function computeBounds(data){
@@ -377,6 +404,9 @@
     }
     map.getSource('pistes').setData(data.pistes);
     map.getSource('lifts').setData(data.lifts);
+    elevationInfo=await elevationReady;
+    if(Number.isFinite(elevationInfo.bearing))sceneBearing=elevationInfo.bearing;
+    installElevationMarkers();
     labelData=data; // HTML labels are created lazily only when explicitly requested.
     if(allNamesVisible&&!nameMarkers.length)installNameMarkers(data);
     dataBounds=computeBounds(data);
@@ -384,12 +414,12 @@
       const latSpan=dataBounds[1][1]-dataBounds[0][1];
       const lonSpan=dataBounds[1][0]-dataBounds[0][0];
       if(latSpan>0.001&&lonSpan>0.001){
-        const camera=map.cameraForBounds(dataBounds,{padding:viewPadding(),maxZoom:14.2});
+        const camera=map.cameraForBounds(dataBounds,{padding:viewPadding(),bearing:sceneBearing,maxZoom:14.2});
         if(camera) {
           // The complete-resort overview is the furthest permitted view.
           map.setMinZoom(Math.max(resort.id==='wanda'?12.9:12,camera.zoom));
         }
-        map.fitBounds(dataBounds,{padding:viewPadding(),duration:900,maxZoom:14.2});
+        map.fitBounds(dataBounds,{padding:viewPadding(),bearing:sceneBearing,pitch:SETTINGS.pitch,duration:650,maxZoom:14.2});
       }
     }
     const namedCount=[...data.pistes.features,...data.lifts.features].filter(f=>String(f.properties?.name_zh||f.properties?.name||f.properties?.ref||'').trim()).length;
@@ -434,3 +464,4 @@
   }, 16000);
   window.__snowAtlasMap = map; // for local debugging in Edge DevTools
 })();
+

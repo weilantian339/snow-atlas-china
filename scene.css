@@ -46,3 +46,5 @@ h1{font-size:clamp(29px,3.15vw,46px);line-height:1.15;letter-spacing:-.045em;mar
 
 .nearby-resorts{position:fixed;left:24px;top:210px;z-index:8;max-width:240px;padding:12px;background:#ffffffeb;border:1px solid #cad9df;border-radius:14px;font-size:11px;color:#466779;box-shadow:0 4px 20px #18344512}.nearby-resorts button{display:block;background:none;border:0;color:#244f68;padding:9px 0;min-height:36px;text-align:left}.nearby-resorts small{display:block;font-size:10px;line-height:1.5;color:#718694}.nearby-map-label{border:1px dashed #557c96;background:#f5fbffed;color:#31586f;border-radius:7px;padding:7px 10px;font-size:12px;cursor:pointer}
 @media(max-width:600px){.nearby-resorts{top:175px;left:14px;max-width:190px;padding:9px}.nearby-resorts button{padding:5px 0;min-height:32px}}
+
+.elevation-marker{display:block;border:1px solid #d2b86b;background:#fff8dfed;color:#6d5214;border-radius:10px;padding:7px 11px;font-size:12px;font-weight:800;box-shadow:0 3px 12px #162c3626;white-space:nowrap}.elevation-low{background:#e8f7ffed;border-color:#83b2ca;color:#285e7a}
