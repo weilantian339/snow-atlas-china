@@ -1,0 +1,98 @@
+{
+  "jikepulin": {
+    "forest": 95,
+    "roads": 54,
+    "buildings": 344,
+    "incomplete_forest_relations": 5
+  },
+  "beidahu": {
+    "forest": 14,
+    "roads": 44,
+    "buildings": 38,
+    "incomplete_forest_relations": 0
+  },
+  "songhuahu": {
+    "forest": 45,
+    "roads": 207,
+    "buildings": 59,
+    "incomplete_forest_relations": 0
+  },
+  "xueruyi": {
+    "forest": 122,
+    "roads": 513,
+    "buildings": 199,
+    "incomplete_forest_relations": 0
+  },
+  "wanlong": {
+    "forest": 82,
+    "roads": 253,
+    "buildings": 120,
+    "incomplete_forest_relations": 0
+  },
+  "koktokay": {
+    "forest": 0,
+    "roads": 1,
+    "buildings": 0,
+    "incomplete_forest_relations": 0
+  },
+  "yunding": {
+    "forest": 128,
+    "roads": 400,
+    "buildings": 199,
+    "incomplete_forest_relations": 0
+  },
+  "wanfeng": {
+    "forest": 8,
+    "roads": 278,
+    "buildings": 91,
+    "incomplete_forest_relations": 0
+  },
+  "jiangjunshan": {
+    "forest": 8,
+    "roads": 613,
+    "buildings": 1768,
+    "incomplete_forest_relations": 0
+  },
+  "fulong": {
+    "forest": 42,
+    "roads": 328,
+    "buildings": 431,
+    "incomplete_forest_relations": 0
+  },
+  "jinshanling": {
+    "forest": 43,
+    "roads": 24,
+    "buildings": 1,
+    "incomplete_forest_relations": 0
+  },
+  "aoshan": {
+    "forest": 30,
+    "roads": 161,
+    "buildings": 54,
+    "incomplete_forest_relations": 0
+  },
+  "thaiwoo": {
+    "forest": 104,
+    "roads": 434,
+    "buildings": 156,
+    "incomplete_forest_relations": 0
+  },
+  "wanda": {
+    "forest": 83,
+    "roads": 151,
+    "buildings": 43,
+    "incomplete_forest_relations": 1
+  },
+  "meilingu": {
+    "forest": 0,
+    "roads": 78,
+    "buildings": 54,
+    "incomplete_forest_relations": 0
+  },
+  "yabuli": {
+    "forest": 23,
+    "roads": 57,
+    "buildings": 122,
+    "incomplete_forest_relations": 1
+  }
+}

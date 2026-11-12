@@ -161,6 +161,7 @@
       byId('vegetation-status').textContent='林地数据暂不可用';
       console.info('[Snow Atlas] No optional forest mask for '+resort.id+' ('+err.message+')');
     }
+    vegetationButton.disabled=!forestLoaded;
     setForestVisibility();
   }
   // MapLibre drapes normal GeoJSON line layers over its raster DEM surface.
@@ -408,13 +409,13 @@
     installLandscapeLayers();
     installLayers();
     installNearby();
-    if(resort.id==='wanda') {
-      fetch('./data/wanda-context.geojson').then(r=>{if(!r.ok)throw Error(r.status);return r.json();}).then(data=>{
-        map.addSource('wanda-context',{type:'geojson',data,attribution:'© OpenStreetMap contributors (ODbL)'});
+    {
+      fetch('./data/context/'+encodeURIComponent(resort.id)+'.geojson').then(r=>{if(!r.ok)throw Error(r.status);return r.json();}).then(data=>{
+        map.addSource('resort-context',{type:'geojson',data,attribution:'© OpenStreetMap contributors (ODbL)'});
         const roadFilter=['all',['==',['get','kind'],'road'],['!',['in',['get','highway'],['literal',['proposed','construction']]]]];
-        map.addLayer({id:'local-road-edge',type:'line',source:'wanda-context',filter:roadFilter,paint:{'line-color':'#a4afa9','line-width':['interpolate',['linear'],['zoom'],12,1.5,16,7],'line-opacity':0.65}},'piste-snow-lane');
-        map.addLayer({id:'local-roads',type:'line',source:'wanda-context',filter:roadFilter,paint:{'line-color':'#faf7ee','line-width':['interpolate',['linear'],['zoom'],12,0.7,16,4.5]}},'piste-snow-lane');
-        map.addLayer({id:'local-buildings',type:'fill',source:'wanda-context',filter:['==',['get','kind'],'building'],paint:{'fill-color':'#b5a99a','fill-opacity':0.9,'fill-outline-color':'#827b72'}},'piste-snow-lane');
+        map.addLayer({id:'local-road-edge',type:'line',source:'resort-context',filter:roadFilter,paint:{'line-color':'#a4afa9','line-width':['interpolate',['linear'],['zoom'],12,1.5,16,7],'line-opacity':0.65}},'piste-snow-lane');
+        map.addLayer({id:'local-roads',type:'line',source:'resort-context',filter:roadFilter,paint:{'line-color':'#faf7ee','line-width':['interpolate',['linear'],['zoom'],12,0.7,16,4.5]}},'piste-snow-lane');
+        map.addLayer({id:'local-buildings',type:'fill',minzoom:13.5,source:'resort-context',filter:['==',['get','kind'],'building'],paint:{'fill-color':'#b5a99a','fill-opacity':0.9,'fill-outline-color':'#827b72'}},'piste-snow-lane');
       }).catch(err=>console.warn('Nearby OSM context unavailable',err));
     }
     loadLandscapeData();
