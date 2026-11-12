@@ -55,6 +55,7 @@
         'hillshade-illumination-direction': 320
       }}
     ],
+    sky:{'sky-color':'#b6d4e4','horizon-color':'#edf4f4','fog-color':'#e8eff0','sky-horizon-blend':0.65,'horizon-fog-blend':0.7,'fog-ground-blend':0.12},
     terrain: {source: 'dem', exaggeration: 1}
   };
   try {
@@ -62,7 +63,7 @@
     map = new maplibregl.Map({
       container: 'map', style, center: SETTINGS.center, zoom: SETTINGS.zoom,
       pitch: SETTINGS.pitch, bearing: SETTINGS.bearing,
-      minZoom: resort.id === 'wanda' ? 12.9 : 9, maxZoom: 17, minPitch: resort.id === 'wanda' ? 58 : 0, maxPitch: 76,
+      minZoom: resort.id === 'wanda' ? 12.9 : 9, maxZoom: 17, minPitch: resort.id === 'wanda' ? 58 : 0, maxPitch: 85,
       antialias: false, renderWorldCopies: false,
       pixelRatio: Math.min(window.devicePixelRatio || 1, mobile() ? 1.25 : 1.6),
       maxTileCacheZoomLevels: 2,
@@ -92,10 +93,23 @@
   if (mobile()) document.querySelector('.hint').textContent='单指平移 · 双指缩放、旋转 · 双指上下滑动倾斜';
   map.getCanvas().addEventListener('contextmenu', (event) => event.preventDefault());
   let dataBounds = null;
+  let viewMode='mountain',overviewZoom=13;
+  const viewButton=byId('btn-view');
+  const viewText=byId('view-toggle-text');
   const reset = () => {
-    if(dataBounds)map.fitBounds(dataBounds,{padding:viewPadding(),bearing:sceneBearing,pitch:SETTINGS.pitch,duration:850,maxZoom:14.2});
-    else map.easeTo({center:SETTINGS.center,zoom:SETTINGS.zoom,pitch:SETTINGS.pitch,bearing:sceneBearing,duration:850});
+    const duration=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:1000;
+    if(viewMode==='mountain'&&elevationInfo?.high&&elevationInfo?.low){
+      const lo=elevationInfo.low.coordinates,hi=elevationInfo.high.coordinates;
+      const center=[lo[0]*.6+hi[0]*.4,lo[1]*.6+hi[1]*.4];
+      const bearing=Math.atan2((hi[0]-lo[0])*Math.cos(lo[1]*Math.PI/180),hi[1]-lo[1])*180/Math.PI;
+      map.easeTo({center,bearing,pitch:82,zoom:Math.min(16.2,overviewZoom+1.55),padding:{top:30,bottom:30,left:20,right:20},duration});
+    }else if(dataBounds)map.fitBounds(dataBounds,{padding:viewPadding(),bearing:sceneBearing,pitch:SETTINGS.pitch,duration,maxZoom:14.2});
+    else map.easeTo({center:SETTINGS.center,zoom:SETTINGS.zoom,pitch:viewMode==='mountain'?82:SETTINGS.pitch,bearing:sceneBearing,duration});
+    viewButton.setAttribute('aria-pressed',String(viewMode==='mountain'));
+    viewText.textContent=viewMode==='mountain'?'山前 · 切全览':'全览 · 切山前';
+    viewButton.title=viewMode==='mountain'?'当前为低机位山前视角，点击切换原全览视角':'当前为原全览视角，点击切换低机位山前视角';
   };
+  viewButton.addEventListener('click',()=>{viewMode=viewMode==='mountain'?'overview':'mountain';reset();});
   byId('btn-reset').addEventListener('click', reset);
   byId('btn-north').addEventListener('click', () => map.easeTo({bearing: 0, duration: 700}));
   byId('close-panel').addEventListener('click', () => byId('feature-panel').hidden = true);
@@ -417,9 +431,10 @@
         const camera=map.cameraForBounds(dataBounds,{padding:viewPadding(),bearing:sceneBearing,maxZoom:14.2});
         if(camera) {
           // The complete-resort overview is the furthest permitted view.
-          map.setMinZoom(Math.max(resort.id==='wanda'?12.9:12,camera.zoom));
+          overviewZoom=Math.max(resort.id==='wanda'?12.9:12,camera.zoom);
+          map.setMinZoom(overviewZoom);
         }
-        map.fitBounds(dataBounds,{padding:viewPadding(),bearing:sceneBearing,pitch:SETTINGS.pitch,duration:650,maxZoom:14.2});
+        reset();
       }
     }
     const namedCount=[...data.pistes.features,...data.lifts.features].filter(f=>String(f.properties?.name_zh||f.properties?.name||f.properties?.ref||'').trim()).length;
@@ -464,4 +479,5 @@
   }, 16000);
   window.__snowAtlasMap = map; // for local debugging in Edge DevTools
 })();
+
 
