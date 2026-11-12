@@ -1,0 +1,1797 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": 669443670,
+      "properties": {
+        "kind": "piste",
+        "name": "白虎（E3）",
+        "difficulty": "advanced",
+        "aerialway": "",
+        "osm_id": 669443670,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4969989,
+            42.1084196
+          ],
+          [
+            127.4974635,
+            42.1083997
+          ],
+          [
+            127.4993067,
+            42.1073214
+          ],
+          [
+            127.5001339,
+            42.1060225
+          ],
+          [
+            127.5009098,
+            42.1055989
+          ],
+          [
+            127.5018735,
+            42.1048552
+          ],
+          [
+            127.5021531,
+            42.1046112
+          ],
+          [
+            127.5023791,
+            42.104414
+          ],
+          [
+            127.5030471,
+            42.1039287
+          ],
+          [
+            127.5038633,
+            42.1033346
+          ],
+          [
+            127.5044955,
+            42.1028931
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 669443671,
+      "properties": {
+        "kind": "piste",
+        "name": "小帅（S1）",
+        "difficulty": "advanced",
+        "aerialway": "",
+        "osm_id": 669443671,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4878573,
+            42.0987006
+          ],
+          [
+            127.4863522,
+            42.0989261
+          ],
+          [
+            127.4859957,
+            42.0990443
+          ],
+          [
+            127.4858523,
+            42.0990948
+          ],
+          [
+            127.4854666,
+            42.0992306
+          ],
+          [
+            127.4834259,
+            42.1009752
+          ],
+          [
+            127.4833167,
+            42.1011008
+          ],
+          [
+            127.4830255,
+            42.1014356
+          ],
+          [
+            127.4823642,
+            42.1024162
+          ],
+          [
+            127.4823067,
+            42.1025015
+          ],
+          [
+            127.4808037,
+            42.1048405
+          ],
+          [
+            127.4811072,
+            42.106529
+          ],
+          [
+            127.4815471,
+            42.1091968
+          ],
+          [
+            127.4815916,
+            42.1102163
+          ],
+          [
+            127.4811358,
+            42.1108756
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 669443672,
+      "properties": {
+        "kind": "lift",
+        "name": "帅索（S）",
+        "difficulty": "",
+        "aerialway": "gondola",
+        "osm_id": 669443672,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4807968,
+            42.1108049
+          ],
+          [
+            127.4812521,
+            42.1101014
+          ],
+          [
+            127.482208,
+            42.10861
+          ],
+          [
+            127.4835424,
+            42.1064221
+          ],
+          [
+            127.484598,
+            42.1047276
+          ],
+          [
+            127.4858963,
+            42.1026728
+          ],
+          [
+            127.4871685,
+            42.1006321
+          ],
+          [
+            127.4883926,
+            42.0986229
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 669443673,
+      "properties": {
+        "kind": "piste",
+        "name": "黑龙（L4）",
+        "difficulty": "advanced",
+        "aerialway": "",
+        "osm_id": 669443673,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4886192,
+            42.0982561
+          ],
+          [
+            127.489175,
+            42.0972985
+          ],
+          [
+            127.4904381,
+            42.0961313
+          ],
+          [
+            127.4905845,
+            42.0960342
+          ],
+          [
+            127.4909512,
+            42.0957908
+          ],
+          [
+            127.4922088,
+            42.094997
+          ],
+          [
+            127.4940351,
+            42.0931298
+          ],
+          [
+            127.4955763,
+            42.0919648
+          ],
+          [
+            127.4984471,
+            42.0914437
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 669443675,
+      "properties": {
+        "kind": "lift",
+        "name": "将军索（G）",
+        "difficulty": "",
+        "aerialway": "gondola",
+        "osm_id": 669443675,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.5048625,
+            42.102068
+          ],
+          [
+            127.5034366,
+            42.1017612
+          ],
+          [
+            127.5017846,
+            42.1013986
+          ],
+          [
+            127.4998273,
+            42.1009708
+          ],
+          [
+            127.4978049,
+            42.1005008
+          ],
+          [
+            127.4898138,
+            42.0985446
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 669443676,
+      "properties": {
+        "kind": "lift",
+        "name": "绅士索（F）",
+        "difficulty": "",
+        "aerialway": "chair_lift",
+        "osm_id": 669443676,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4924926,
+            42.1048779
+          ],
+          [
+            127.4946443,
+            42.1045068
+          ],
+          [
+            127.496773,
+            42.1041035
+          ],
+          [
+            127.4991438,
+            42.1036727
+          ],
+          [
+            127.5015222,
+            42.1032195
+          ],
+          [
+            127.5030894,
+            42.1029127
+          ],
+          [
+            127.5042618,
+            42.1026744
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 669443684,
+      "properties": {
+        "kind": "piste",
+        "name": "小白虎（E2）",
+        "difficulty": "intermediate",
+        "aerialway": "",
+        "osm_id": 669443684,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4959589,
+            42.1080604
+          ],
+          [
+            127.4963407,
+            42.1068217
+          ],
+          [
+            127.4975362,
+            42.1057561
+          ],
+          [
+            127.4985382,
+            42.1051444
+          ],
+          [
+            127.4988477,
+            42.1049355
+          ],
+          [
+            127.499508,
+            42.1044897
+          ],
+          [
+            127.5003731,
+            42.1042706
+          ],
+          [
+            127.5009339,
+            42.1038956
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 669443687,
+      "properties": {
+        "kind": "piste",
+        "name": "小绅士（F2）",
+        "difficulty": "easy",
+        "aerialway": "",
+        "osm_id": 669443687,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4920374,
+            42.1051605
+          ],
+          [
+            127.4921865,
+            42.1052203
+          ],
+          [
+            127.4924875,
+            42.1053715
+          ],
+          [
+            127.4936382,
+            42.1057793
+          ],
+          [
+            127.4943221,
+            42.1054988
+          ],
+          [
+            127.4948395,
+            42.1054064
+          ],
+          [
+            127.4957841,
+            42.105217
+          ],
+          [
+            127.4968462,
+            42.1048667
+          ],
+          [
+            127.497277,
+            42.1047059
+          ],
+          [
+            127.4983594,
+            42.1041332
+          ],
+          [
+            127.499246,
+            42.103842
+          ],
+          [
+            127.5003185,
+            42.1038186
+          ],
+          [
+            127.5009339,
+            42.1038956
+          ],
+          [
+            127.5019102,
+            42.1034658
+          ],
+          [
+            127.5026175,
+            42.1032639
+          ],
+          [
+            127.5041133,
+            42.1029762
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 669443688,
+      "properties": {
+        "kind": "piste",
+        "name": "淑女",
+        "difficulty": "easy",
+        "aerialway": "",
+        "osm_id": 669443688,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4928268,
+            42.1063088
+          ],
+          [
+            127.4914574,
+            42.1063356
+          ],
+          [
+            127.4910256,
+            42.1065491
+          ],
+          [
+            127.4904196,
+            42.1068487
+          ],
+          [
+            127.4892395,
+            42.1070079
+          ],
+          [
+            127.4881777,
+            42.1069343
+          ],
+          [
+            127.4863962,
+            42.1071549
+          ],
+          [
+            127.4860987,
+            42.1073832
+          ],
+          [
+            127.4855983,
+            42.1077673
+          ],
+          [
+            127.4839141,
+            42.1088929
+          ],
+          [
+            127.4837215,
+            42.1090392
+          ],
+          [
+            127.4811038,
+            42.1110279
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 669443690,
+      "properties": {
+        "kind": "piste",
+        "name": "次帅（S4）",
+        "difficulty": "expert",
+        "aerialway": "",
+        "osm_id": 669443690,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4833167,
+            42.1011008
+          ],
+          [
+            127.4837725,
+            42.1019631
+          ],
+          [
+            127.483918,
+            42.1022399
+          ],
+          [
+            127.4843149,
+            42.102622
+          ],
+          [
+            127.4851625,
+            42.1032349
+          ],
+          [
+            127.4861818,
+            42.1036091
+          ],
+          [
+            127.4869487,
+            42.1042936
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 669443691,
+      "properties": {
+        "kind": "piste",
+        "name": "大将军（G3）",
+        "difficulty": "advanced",
+        "aerialway": "",
+        "osm_id": 669443691,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4903125,
+            42.0991981
+          ],
+          [
+            127.4906746,
+            42.099175
+          ],
+          [
+            127.4913974,
+            42.0990369
+          ],
+          [
+            127.492783,
+            42.0988089
+          ],
+          [
+            127.4939429,
+            42.0989283
+          ],
+          [
+            127.4952103,
+            42.0993862
+          ],
+          [
+            127.4958438,
+            42.0997915
+          ],
+          [
+            127.4961693,
+            42.0999395
+          ],
+          [
+            127.4966056,
+            42.1005688
+          ],
+          [
+            127.4971746,
+            42.1009684
+          ],
+          [
+            127.4986201,
+            42.1015158
+          ],
+          [
+            127.4986464,
+            42.1015257
+          ],
+          [
+            127.4994123,
+            42.1017046
+          ],
+          [
+            127.5001263,
+            42.1017391
+          ],
+          [
+            127.5018583,
+            42.1019176
+          ],
+          [
+            127.5020381,
+            42.1019361
+          ],
+          [
+            127.5037529,
+            42.102192
+          ],
+          [
+            127.5046706,
+            42.1023355
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 669443697,
+      "properties": {
+        "kind": "piste",
+        "name": "青龙（L2）",
+        "difficulty": "advanced",
+        "aerialway": "",
+        "osm_id": 669443697,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4911074,
+            42.0976947
+          ],
+          [
+            127.4920722,
+            42.097519
+          ],
+          [
+            127.4926429,
+            42.096885
+          ],
+          [
+            127.4939303,
+            42.0961685
+          ],
+          [
+            127.4946491,
+            42.0957784
+          ],
+          [
+            127.4948959,
+            42.0950778
+          ],
+          [
+            127.4957971,
+            42.0942897
+          ],
+          [
+            127.4962263,
+            42.0937324
+          ],
+          [
+            127.4979858,
+            42.0924665
+          ],
+          [
+            127.4989729,
+            42.0917818
+          ],
+          [
+            127.4994691,
+            42.0915049
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 669443699,
+      "properties": {
+        "kind": "piste",
+        "name": "绅士（F1）",
+        "difficulty": "intermediate",
+        "aerialway": "",
+        "osm_id": 669443699,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4920374,
+            42.1051605
+          ],
+          [
+            127.4921998,
+            42.104874
+          ],
+          [
+            127.49276,
+            42.1045638
+          ],
+          [
+            127.4936848,
+            42.1044667
+          ],
+          [
+            127.4955051,
+            42.1042299
+          ],
+          [
+            127.4962669,
+            42.1040071
+          ],
+          [
+            127.4971574,
+            42.1032668
+          ],
+          [
+            127.4976187,
+            42.1030519
+          ],
+          [
+            127.4992066,
+            42.1029643
+          ],
+          [
+            127.5016302,
+            42.1027065
+          ],
+          [
+            127.5042163,
+            42.1024314
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 669443701,
+      "properties": {
+        "kind": "lift",
+        "name": "白虎索（E）",
+        "difficulty": "",
+        "aerialway": "chair_lift",
+        "osm_id": 669443701,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.5046678,
+            42.1030825
+          ],
+          [
+            127.5038009,
+            42.103675
+          ],
+          [
+            127.5026644,
+            42.1044648
+          ],
+          [
+            127.5013545,
+            42.1053753
+          ],
+          [
+            127.5004791,
+            42.1059836
+          ],
+          [
+            127.4982942,
+            42.1075089
+          ],
+          [
+            127.4975146,
+            42.1080582
+          ],
+          [
+            127.4972508,
+            42.1082441
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 669443738,
+      "properties": {
+        "kind": "lift",
+        "name": "M",
+        "difficulty": "",
+        "aerialway": "chair_lift",
+        "osm_id": 669443738,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4817574,
+            42.1112479
+          ],
+          [
+            127.4826864,
+            42.1108112
+          ],
+          [
+            127.4836154,
+            42.1103745
+          ],
+          [
+            127.4845536,
+            42.1099777
+          ],
+          [
+            127.4854071,
+            42.1096168
+          ],
+          [
+            127.48653,
+            42.1091419
+          ],
+          [
+            127.4874617,
+            42.1087479
+          ],
+          [
+            127.4883911,
+            42.1083606
+          ],
+          [
+            127.4893407,
+            42.107965
+          ],
+          [
+            127.4902598,
+            42.107582
+          ],
+          [
+            127.491245,
+            42.1071714
+          ],
+          [
+            127.4921512,
+            42.1067938
+          ],
+          [
+            127.4927579,
+            42.106541
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 669443747,
+      "properties": {
+        "kind": "piste",
+        "name": "统帅道",
+        "difficulty": "easy",
+        "aerialway": "",
+        "osm_id": 669443747,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4823642,
+            42.1024162
+          ],
+          [
+            127.4832816,
+            42.1020275
+          ],
+          [
+            127.4837725,
+            42.1019631
+          ],
+          [
+            127.4841348,
+            42.1019155
+          ],
+          [
+            127.485378,
+            42.101696
+          ],
+          [
+            127.487221,
+            42.101271
+          ],
+          [
+            127.487508,
+            42.101259
+          ],
+          [
+            127.488056,
+            42.101401
+          ],
+          [
+            127.488244,
+            42.101562
+          ],
+          [
+            127.488427,
+            42.101972
+          ],
+          [
+            127.4886791,
+            42.1027931
+          ],
+          [
+            127.4890118,
+            42.1041544
+          ],
+          [
+            127.4892029,
+            42.1044918
+          ],
+          [
+            127.4895985,
+            42.1047343
+          ],
+          [
+            127.4913475,
+            42.1049622
+          ],
+          [
+            127.4920374,
+            42.1051605
+          ],
+          [
+            127.4918018,
+            42.1054907
+          ],
+          [
+            127.4910256,
+            42.1065491
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 669453937,
+      "properties": {
+        "kind": "lift",
+        "name": "龙索（L）",
+        "difficulty": "",
+        "aerialway": "chair_lift",
+        "osm_id": 669453937,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4996113,
+            42.0910473
+          ],
+          [
+            127.4993257,
+            42.0912395
+          ],
+          [
+            127.497447,
+            42.0925038
+          ],
+          [
+            127.4958294,
+            42.0936125
+          ],
+          [
+            127.4946361,
+            42.0944304
+          ],
+          [
+            127.4930203,
+            42.0955097
+          ],
+          [
+            127.4926294,
+            42.0957708
+          ],
+          [
+            127.4913474,
+            42.096655
+          ],
+          [
+            127.4892266,
+            42.0981176
+          ],
+          [
+            127.4891401,
+            42.0981772
+          ],
+          [
+            127.489006,
+            42.0982697
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 669453940,
+      "properties": {
+        "kind": "piste",
+        "name": "大帅（S2）",
+        "difficulty": "expert",
+        "aerialway": "",
+        "osm_id": 669453940,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4858523,
+            42.0990948
+          ],
+          [
+            127.4863724,
+            42.1005847
+          ],
+          [
+            127.4870853,
+            42.1027129
+          ],
+          [
+            127.4869487,
+            42.1038499
+          ],
+          [
+            127.4869487,
+            42.1042936
+          ],
+          [
+            127.486835,
+            42.1057232
+          ],
+          [
+            127.4863962,
+            42.1071549
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 669453941,
+      "properties": {
+        "kind": "piste",
+        "name": "四将军（G6）",
+        "difficulty": "intermediate",
+        "aerialway": "",
+        "osm_id": 669453941,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4900089,
+            42.1014559
+          ],
+          [
+            127.4909343,
+            42.1020582
+          ],
+          [
+            127.4927367,
+            42.1026632
+          ],
+          [
+            127.4931354,
+            42.1027247
+          ],
+          [
+            127.4935629,
+            42.1027906
+          ],
+          [
+            127.4957301,
+            42.1027985
+          ],
+          [
+            127.4961757,
+            42.1025622
+          ],
+          [
+            127.4986201,
+            42.1015158
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 669453942,
+      "properties": {
+        "kind": "piste",
+        "name": "隧道（E1）",
+        "difficulty": "intermediate",
+        "aerialway": "",
+        "osm_id": 669453942,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4969989,
+            42.1084196
+          ],
+          [
+            127.4964146,
+            42.1083259
+          ],
+          [
+            127.4959589,
+            42.1080604
+          ],
+          [
+            127.4955614,
+            42.1078288
+          ],
+          [
+            127.4951582,
+            42.1074391
+          ],
+          [
+            127.4944454,
+            42.107093
+          ],
+          [
+            127.4933736,
+            42.1068339
+          ],
+          [
+            127.4932385,
+            42.1065678
+          ],
+          [
+            127.4930722,
+            42.1063735
+          ],
+          [
+            127.4928268,
+            42.1063088
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 669503556,
+      "properties": {
+        "kind": "piste",
+        "name": "",
+        "difficulty": "",
+        "aerialway": "",
+        "osm_id": 669503556,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4994123,
+            42.1017046
+          ],
+          [
+            127.500065,
+            42.1023025
+          ],
+          [
+            127.5008388,
+            42.1025332
+          ],
+          [
+            127.5016302,
+            42.1027065
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 669503557,
+      "properties": {
+        "kind": "piste",
+        "name": "二将军（G2）",
+        "difficulty": "advanced",
+        "aerialway": "",
+        "osm_id": 669503557,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4906934,
+            42.0982038
+          ],
+          [
+            127.493072,
+            42.0982782
+          ],
+          [
+            127.4958293,
+            42.0977766
+          ],
+          [
+            127.4971382,
+            42.0978085
+          ],
+          [
+            127.4978892,
+            42.0978164
+          ],
+          [
+            127.4988226,
+            42.098915
+          ],
+          [
+            127.4996702,
+            42.1000454
+          ],
+          [
+            127.5001366,
+            42.1005547
+          ],
+          [
+            127.5004829,
+            42.1010149
+          ],
+          [
+            127.5008018,
+            42.1012559
+          ],
+          [
+            127.5018583,
+            42.1019176
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 669503558,
+      "properties": {
+        "kind": "piste",
+        "name": "白龙（L3）",
+        "difficulty": "advanced",
+        "aerialway": "",
+        "osm_id": 669503558,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4920722,
+            42.097519
+          ],
+          [
+            127.4929003,
+            42.0973069
+          ],
+          [
+            127.493705,
+            42.0972194
+          ],
+          [
+            127.4942629,
+            42.096877
+          ],
+          [
+            127.4947626,
+            42.0960197
+          ],
+          [
+            127.495883,
+            42.0953167
+          ],
+          [
+            127.4957971,
+            42.0942897
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 669503570,
+      "properties": {
+        "kind": "piste",
+        "name": "将帅",
+        "difficulty": "intermediate",
+        "aerialway": "",
+        "osm_id": 669503570,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4900157,
+            42.103352
+          ],
+          [
+            127.4904483,
+            42.1056427
+          ],
+          [
+            127.4897199,
+            42.1063952
+          ],
+          [
+            127.4881777,
+            42.1069343
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 669503571,
+      "properties": {
+        "kind": "piste",
+        "name": "小将军（G7）",
+        "difficulty": "intermediate",
+        "aerialway": "",
+        "osm_id": 669503571,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.48978,
+            42.0988018
+          ],
+          [
+            127.4900909,
+            42.098927
+          ],
+          [
+            127.4903125,
+            42.0991981
+          ],
+          [
+            127.4903665,
+            42.0993932
+          ],
+          [
+            127.490244,
+            42.1003739
+          ],
+          [
+            127.4900089,
+            42.1014559
+          ],
+          [
+            127.4899398,
+            42.1017737
+          ],
+          [
+            127.4898365,
+            42.1026711
+          ],
+          [
+            127.4900157,
+            42.103352
+          ],
+          [
+            127.4913359,
+            42.1039548
+          ],
+          [
+            127.4921994,
+            42.1044348
+          ],
+          [
+            127.49276,
+            42.1045638
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 1092453757,
+      "properties": {
+        "kind": "piste",
+        "name": "小龙（L1）",
+        "difficulty": "advanced",
+        "aerialway": "",
+        "osm_id": 1092453757,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4900909,
+            42.098927
+          ],
+          [
+            127.4902027,
+            42.0988073
+          ],
+          [
+            127.4906934,
+            42.0982038
+          ],
+          [
+            127.4911074,
+            42.0976947
+          ],
+          [
+            127.4905936,
+            42.096954
+          ],
+          [
+            127.4905845,
+            42.0960342
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 1092453761,
+      "properties": {
+        "kind": "piste",
+        "name": "三帅（S5）",
+        "difficulty": "expert",
+        "aerialway": "",
+        "osm_id": 1092453761,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4823642,
+            42.1024162
+          ],
+          [
+            127.4833184,
+            42.1038992
+          ],
+          [
+            127.4833917,
+            42.1040108
+          ],
+          [
+            127.4842955,
+            42.1048063
+          ],
+          [
+            127.484614,
+            42.1053117
+          ],
+          [
+            127.4855554,
+            42.106135
+          ],
+          [
+            127.4863962,
+            42.1071549
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 1092453762,
+      "properties": {
+        "kind": "piste",
+        "name": "四帅（S6）",
+        "difficulty": "expert",
+        "aerialway": "",
+        "osm_id": 1092453762,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4833184,
+            42.1038992
+          ],
+          [
+            127.4830036,
+            42.104719
+          ],
+          [
+            127.4836239,
+            42.106138
+          ],
+          [
+            127.4839796,
+            42.1069212
+          ],
+          [
+            127.4837215,
+            42.1090392
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 1092500617,
+      "properties": {
+        "kind": "lift",
+        "name": "",
+        "difficulty": "",
+        "aerialway": "magic_carpet",
+        "osm_id": 1092500617,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.5047167,
+            42.1016995
+          ],
+          [
+            127.5012635,
+            42.1010509
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 1092500618,
+      "properties": {
+        "kind": "lift",
+        "name": "",
+        "difficulty": "",
+        "aerialway": "magic_carpet",
+        "osm_id": 1092500618,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.5048376,
+            42.1013547
+          ],
+          [
+            127.5014166,
+            42.1006444
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 1092500619,
+      "properties": {
+        "kind": "piste",
+        "name": "初级训练道",
+        "difficulty": "novice",
+        "aerialway": "",
+        "osm_id": 1092500619,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.5013236,
+            42.100852
+          ],
+          [
+            127.5047742,
+            42.1015314
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 1092500636,
+      "properties": {
+        "kind": "lift",
+        "name": "",
+        "difficulty": "",
+        "aerialway": "magic_carpet",
+        "osm_id": 1092500636,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.5038319,
+            42.1026493
+          ],
+          [
+            127.5021122,
+            42.102977
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 1092500637,
+      "properties": {
+        "kind": "piste",
+        "name": "初级训练道",
+        "difficulty": "novice",
+        "aerialway": "",
+        "osm_id": 1092500637,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.5020649,
+            42.1028599
+          ],
+          [
+            127.5038158,
+            42.1025385
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 1246264854,
+      "properties": {
+        "kind": "piste",
+        "name": "三将军",
+        "difficulty": "advanced",
+        "aerialway": "",
+        "osm_id": 1246264854,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4942629,
+            42.096877
+          ],
+          [
+            127.4945919,
+            42.0969973
+          ],
+          [
+            127.4951069,
+            42.0969973
+          ],
+          [
+            127.4965123,
+            42.0965913
+          ],
+          [
+            127.4967055,
+            42.0965674
+          ],
+          [
+            127.4969308,
+            42.0966232
+          ],
+          [
+            127.4971024,
+            42.0968063
+          ],
+          [
+            127.4978892,
+            42.0978164
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 1314278308,
+      "properties": {
+        "kind": "piste",
+        "name": "",
+        "difficulty": "",
+        "aerialway": "",
+        "osm_id": 1314278308,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.4932385,
+            42.1065678
+          ],
+          [
+            127.4932315,
+            42.1060511
+          ],
+          [
+            127.4936382,
+            42.1057793
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 1567009028,
+      "properties": {
+        "kind": "piste",
+        "name": "绅士白虎连接道",
+        "difficulty": "novice",
+        "aerialway": "",
+        "osm_id": 1567009028,
+        "provenance": "OpenStreetMap community geometry — unverified"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            127.497277,
+            42.1047059
+          ],
+          [
+            127.4988477,
+            42.1049355
+          ],
+          [
+            127.499995,
+            42.1049756
+          ],
+          [
+            127.5021531,
+            42.1046112
+          ]
+        ]
+      }
+    }
+  ]
+}

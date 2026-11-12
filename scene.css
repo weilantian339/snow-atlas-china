@@ -1,0 +1,48 @@
+:root{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;color:#183445;background:#e9f1f4;font-synthesis:none}
+*{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden}button{font:inherit;cursor:pointer}#map{position:fixed;inset:0;background:#e2edf0}
+#map:after{content:"";pointer-events:none;position:absolute;inset:0;background:linear-gradient(180deg,rgba(17,41,60,.08),transparent 20%,transparent 80%,rgba(16,37,51,.08))}
+.masthead{position:fixed;top:26px;left:32px;pointer-events:none;z-index:5;text-shadow:0 1px 10px rgba(255,255,255,.8)}
+.eyebrow{font-size:10px;font-weight:800;letter-spacing:.16em;color:#52748b}.icon-mountain{font-size:20px;vertical-align:-2px;font-weight:500}.separator{color:#96b1c1;padding:0 7px}
+h1{font-size:clamp(29px,3.15vw,46px);line-height:1.15;letter-spacing:-.045em;margin:7px 0 5px;font-weight:780;color:#16374a}.resort-suffix{font-size:.54em;font-weight:480;padding-left:8px;color:#355d70}.subline{font-size:11px;font-weight:650;letter-spacing:.12em;color:#52758b}
+.tools{position:fixed;z-index:9;right:24px;top:26px;display:flex;gap:9px}.tools button{height:41px;background:rgba(255,255,255,.88);color:#254a5b;box-shadow:0 2px 14px rgba(22,43,59,.09);border:1px solid rgba(180,197,204,.6);padding:0 14px;border-radius:12px;font-size:13px;font-weight:640;backdrop-filter:blur(14px)}.tools button:hover{background:white;transform:translateY(-1px)}
+.data-status{position:fixed;z-index:6;bottom:73px;left:28px;max-width:min(520px,calc(100vw - 50px));padding:10px 15px;border:1px solid rgba(176,195,203,.55);background:rgba(251,253,254,.91);backdrop-filter:blur(18px);border-radius:12px;display:flex;gap:10px;align-items:center;font-size:12px;color:#3f6072;box-shadow:0 3px 16px rgba(16,34,47,.07)}.status-dot{background:#bda767;box-shadow:0 0 0 3px rgba(189,167,103,.13);width:7px;height:7px;border-radius:50%;flex:none}.status-dot.ok{background:#35a58d;box-shadow:0 0 0 3px rgba(53,165,141,.12)}.status-dot.warn{background:#d9865f;box-shadow:0 0 0 3px rgba(217,134,95,.12)}.stat-small{opacity:.74;font-size:11px}
+.hint{position:fixed;bottom:25px;left:31px;z-index:7;font-size:11px;letter-spacing:.02em;color:#536f7f;text-shadow:0 1px 4px white}
+.legend{position:fixed;bottom:64px;right:24px;z-index:7;border:1px solid rgba(185,202,211,.7);background:rgba(251,253,254,.9);backdrop-filter:blur(20px);border-radius:13px;padding:15px 18px;box-shadow:0 3px 20px rgba(22,40,52,.07)}.legend-title{font-size:10px;font-weight:780;letter-spacing:.14em;color:#637f8c;margin-bottom:10px}.legend-note{color:#8ca3ad;font-size:10px;letter-spacing:0;font-weight:400;margin-left:10px}.legend-items{display:flex;gap:14px;flex-wrap:wrap}.legend-items span{display:flex;align-items:center;gap:5px;font-size:12px;color:#486677}.swatch{width:16px;height:4px;display:inline-block;border-radius:9px}.swatch.green{background:#22a474}.swatch.blue{background:#278ad0}.swatch.black{background:#2a3441}.swatch.orange{background:#ed8744}.swatch.gray{background:#859aa7}
+.feature-panel{position:fixed;z-index:20;right:24px;top:87px;width:310px;padding:20px 20px 17px;background:rgba(255,255,255,.95);backdrop-filter:blur(18px);border:1px solid #dce7ed;border-radius:15px;box-shadow:0 12px 34px rgba(24,57,73,.16)}.feature-panel[hidden]{display:none}.feature-panel h2{margin:9px 25px 8px 0;font-size:23px;line-height:1.25}.feature-panel p{font-size:12px;line-height:1.65;color:#4b6574}.feature-panel .source-warning{color:#7a919d;font-size:11px;padding-top:8px;border-top:1px solid #e6edf1}.feature-panel .close{position:absolute;right:12px;top:10px;border:0;background:none;color:#607787;font-size:23px}
+.loading{position:fixed;inset:0;z-index:19;pointer-events:none;display:flex;align-items:center;justify-content:center;gap:12px;color:#486b7b;background:rgba(228,239,244,.80);transition:opacity .6s ease;font-size:13px;letter-spacing:.04em}.loading.hidden{opacity:0;visibility:hidden}.loading-ring{height:19px;width:19px;border:2px solid #adc1cc;border-top-color:#3c8598;border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.attribution-custom{position:fixed;right:15px;bottom:15px;color:rgba(51,78,94,.75);font-size:9px;letter-spacing:.01em;z-index:4;text-shadow:0 1px 5px white;pointer-events:none}.maplibregl-ctrl-attrib{font-size:10px!important;background:rgba(255,255,255,.82)!important}.maplibregl-ctrl-bottom-right{z-index:10}
+@media(max-width:880px){.legend{bottom:100px;left:20px;right:auto}.data-status{bottom:174px;left:20px}.masthead{top:22px;left:21px}.tools{right:14px;top:22px}.tools button span{display:none}.tools button{width:43px;padding:0;font-size:20px}.hint{left:20px;bottom:50px;max-width:400px;line-height:1.7}.attribution-custom{left:20px;right:auto;bottom:8px}.feature-panel{top:auto;bottom:225px;right:14px;width:min(320px,calc(100vw - 28px))}}
+
+/* Verified against source names only, NOT officially verified trail geography. */
+.geo-label{pointer-events:none;white-space:nowrap;font-family:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;font-size:11px;font-weight:700;line-height:1.2;color:#17252c;text-shadow:0 1px 2px #fff,0 -1px 2px #fff,1px 0 2px #fff,-1px 0 2px #fff,0 0 5px #fff;user-select:none;will-change:transform}
+.geo-label-lift{font-size:10px;font-weight:800;color:#6e3a20;background:rgba(255,255,255,.76);padding:2px 4px;border-radius:4px;box-shadow:0 1px 5px #ffffff90}
+
+/* M1 v0.5: one-click labels, with a strong but restrained active state. */
+.tools #btn-labels[aria-pressed="true"]{background:#183e50;color:#fff;border-color:#183e50;box-shadow:0 4px 18px rgba(19,52,67,.21)}
+.tools #btn-labels[aria-pressed="true"]:hover{background:#225368}
+.geo-label-unnamed{font-size:9px;font-weight:650;color:#566c76;background:rgba(255,255,255,.7);padding:2px 3px;border:1px dashed rgba(82,107,120,.35);border-radius:3px}
+
+/* v0.9: Ikon-like cartographic visual quality, original textures & styling */
+#map{background:#e8eff0}
+#map:after{background:linear-gradient(180deg,rgba(44,70,68,.06),transparent 21%,transparent 80%,rgba(50,79,84,.055))}
+.tools #btn-vegetation[aria-pressed="true"]{border-color:rgba(121,157,129,.63);color:#365d51;background:rgba(245,250,247,.93)}
+.tools #btn-vegetation[aria-pressed="false"]{opacity:.66}
+@media(max-width:880px){.tools #btn-vegetation{min-width:43px}}
+
+/* Compact touch layout for the Wanda pilot. */
+@media(max-width:600px){
+ .masthead{top:calc(22px + env(safe-area-inset-top))!important;left:18px!important;right:18px}
+ .eyebrow{font-size:8px;letter-spacing:.1em}h1{font-size:30px}.subline{font-size:10px}
+ .tools{top:calc(120px + env(safe-area-inset-top))!important;left:14px;right:14px!important;gap:6px}
+ .tools button{min-height:44px;width:auto;flex:1;padding:0 7px;font-size:14px;border-radius:12px}
+ .tools button span{display:inline;font-size:11px}
+ .scene-preview{display:none}.legend{left:14px;right:14px;bottom:calc(56px + env(safe-area-inset-bottom));padding:10px 12px}
+ .legend-title{margin-bottom:7px}.legend-note{display:none}.legend-items{gap:10px}.legend-items span{font-size:10px}
+ .data-status{left:14px;right:14px;bottom:calc(137px + env(safe-area-inset-bottom));max-width:none;padding:9px 12px;flex-wrap:wrap;gap:6px;font-size:10px}
+ .hint{bottom:calc(29px + env(safe-area-inset-bottom));left:16px;font-size:10px}
+ .feature-panel{bottom:calc(183px + env(safe-area-inset-bottom));left:14px;right:14px;width:auto}
+}
+@media(prefers-reduced-motion:reduce){.loading{transition:none}.loading-ring{animation:none}}
+
+.nearby-resorts{position:fixed;left:24px;top:210px;z-index:8;max-width:240px;padding:12px;background:#ffffffeb;border:1px solid #cad9df;border-radius:14px;font-size:11px;color:#466779;box-shadow:0 4px 20px #18344512}.nearby-resorts button{display:block;background:none;border:0;color:#244f68;padding:9px 0;min-height:36px;text-align:left}.nearby-resorts small{display:block;font-size:10px;line-height:1.5;color:#718694}.nearby-map-label{border:1px dashed #557c96;background:#f5fbffed;color:#31586f;border-radius:7px;padding:7px 10px;font-size:12px;cursor:pointer}
+@media(max-width:600px){.nearby-resorts{top:175px;left:14px;max-width:190px;padding:9px}.nearby-resorts button{padding:5px 0;min-height:32px}}

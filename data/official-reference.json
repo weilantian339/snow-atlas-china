@@ -1,0 +1,14 @@
+{
+  "resort": "长白山万达国际度假区滑雪场",
+  "official_url": "https://www.wandaresorts.com/cn/snow/",
+  "reference_center_lnglat": [127.49380, 42.10300],
+  "center_source": "https://skipedia.org/en/changbaishan-wanda",
+  "center_precision": "approximate map center, not a surveyed coordinate",
+  "official_lifts_names": ["帅索缆车", "将军索缆车", "绅士索缆车", "白虎索缆车", "龙索缆车", "淑女索"],
+  "geometry_status": "NOT VERIFIED — No official surveyed coordinates acquired",
+  "notes": [
+    "The official trail schematic is not itself GIS; do not derive exact positions without georeferencing.",
+    "The resort changed some trails and facilities for the 2026–2027 ski season.",
+    "AMap service coordinates are often GCJ-02, while GeoJSON/OSM use WGS84; never directly mix these coordinate references."
+  ]
+}

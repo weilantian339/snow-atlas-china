@@ -1,0 +1,114 @@
+{
+  "jikepulin": {
+    "state": "ready_unverified",
+    "pistes": 87,
+    "lifts": 10,
+    "ambiguous": 0,
+    "source": "OSM API bbox; incomplete ways excluded"
+  },
+  "beidahu": {
+    "state": "ready_unverified",
+    "pistes": 75,
+    "lifts": 19,
+    "ambiguous": 0,
+    "source": "OSM API bbox; incomplete ways excluded"
+  },
+  "songhuahu": {
+    "state": "ready_unverified",
+    "pistes": 50,
+    "lifts": 15,
+    "ambiguous": 0,
+    "source": "OSM API bbox; incomplete ways excluded"
+  },
+  "xueruyi": {
+    "state": "ready_unverified",
+    "pistes": 30,
+    "lifts": 7,
+    "ambiguous": 29,
+    "source": "OSM API bbox; incomplete ways excluded"
+  },
+  "wanlong": {
+    "state": "ready_unverified",
+    "pistes": 33,
+    "lifts": 9,
+    "ambiguous": 44,
+    "source": "OSM API bbox; incomplete ways excluded"
+  },
+  "koktokay": {
+    "state": "ready_unverified",
+    "pistes": 33,
+    "lifts": 9,
+    "ambiguous": 0,
+    "source": "OSM API bbox; incomplete ways excluded"
+  },
+  "yunding": {
+    "state": "ready_unverified",
+    "pistes": 30,
+    "lifts": 7,
+    "ambiguous": 55,
+    "source": "OSM API bbox; incomplete ways excluded"
+  },
+  "wanfeng": {
+    "state": "ready_unverified",
+    "pistes": 28,
+    "lifts": 9,
+    "ambiguous": 0,
+    "source": "OSM API bbox; incomplete ways excluded"
+  },
+  "jiangjunshan": {
+    "state": "ready_unverified",
+    "pistes": 27,
+    "lifts": 15,
+    "ambiguous": 0,
+    "source": "OSM API bbox; incomplete ways excluded"
+  },
+  "fulong": {
+    "state": "ready_unverified",
+    "pistes": 61,
+    "lifts": 18,
+    "ambiguous": 0,
+    "source": "OSM API bbox; incomplete ways excluded"
+  },
+  "jinshanling": {
+    "state": "ready_unverified",
+    "pistes": 19,
+    "lifts": 2,
+    "ambiguous": 0,
+    "source": "OSM API bbox; incomplete ways excluded"
+  },
+  "aoshan": {
+    "state": "ready_unverified",
+    "pistes": 20,
+    "lifts": 7,
+    "ambiguous": 0,
+    "source": "OSM API bbox; incomplete ways excluded"
+  },
+  "thaiwoo": {
+    "state": "ready_unverified",
+    "pistes": 24,
+    "lifts": 10,
+    "ambiguous": 24,
+    "source": "OSM API bbox; incomplete ways excluded"
+  },
+  "wanda": {
+    "state": "ready_unverified",
+    "pistes": 27,
+    "lifts": 9,
+    "ambiguous": 0,
+    "source": "OSM API bbox; incomplete ways excluded"
+  },
+  "meilingu": {
+    "state": "ready_unverified",
+    "pistes": 13,
+    "lifts": 3,
+    "ambiguous": 0,
+    "source": "OSM API bbox; incomplete ways excluded"
+  },
+  "yabuli": {
+    "state": "ready_unverified",
+    "pistes": 28,
+    "lifts": 17,
+    "ambiguous": 0,
+    "source": "OSM API bbox; incomplete ways excluded"
+  }
+}

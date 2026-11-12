@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta name="description" content="探索中国16座滑雪场的三维地形、雪道与附近雪场。社区地图数据，仅供展示参考。">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#eaf1f5" />
+  <title>雪场三维地形 | Snow Atlas</title>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin />
+  <link rel="preconnect" href="https://s3.amazonaws.com" crossorigin />
+  <link href="./scene.css?v=20261112-16" rel="stylesheet" />
+<link href="./vendor/maplibre-gl.css" rel="stylesheet" />
+<style>.masthead{top:98px;left:32px}.tools{top:24px;right:24px}.resort-suffix{font-size:.58em}.scene-preview{position:fixed;top:77px;right:24px;z-index:8;font-size:11px;font-weight:700;letter-spacing:.04em;background:#eaf3f7ed;color:#315569;border:1px solid #c8dae1;border-radius:8px;padding:7px 10px}</style>
+</head>
+<body>
+  <main id="map" aria-label="长白山万达滑雪场三维地形地图"></main>
+  <header class="masthead">
+    <div class="eyebrow"><span class="icon-mountain">△</span> SNOW ATLAS <span class="separator">/</span> GEOSPATIAL PREVIEW 01</div>
+    <h1>长白山万达<span class="resort-suffix">滑雪场</span></h1>
+    <div class="subline">CHANGBAISHAN WANDA · JILIN, CHINA</div>
+  </header>
+  <div class="scene-preview" id="scene-preview">真实地形 · 轻植被风格 v0.9</div>
+  <div class="tools" role="toolbar" aria-label="地图控制">
+    <button id="btn-vegetation" type="button" aria-pressed="true" title="显示/隐藏OSM林区纹理">♣ <span id="vegetation-toggle-text">植被：开</span></button>
+    <button id="btn-labels" type="button" aria-pressed="false" title="显示全部雪道、索道名称；未知名称显示OSM编号">Aa <span id="label-toggle-text">显示全部名称</span></button>
+    <button id="btn-reset" type="button" title="恢复默认视角 (R)" aria-label="恢复默认视角">⌖ <span>复位视角</span></button>
+    <button id="btn-north" type="button" title="朝向正北 (N)" aria-label="朝向正北">↟ <span>正北</span></button>
+  </div>
+  <aside class="data-status" aria-live="polite">
+    <span class="status-dot" id="status-dot"></span>
+    <span id="status-text">地图初始化中…</span>
+    <span class="stat-small" id="feature-count"></span> <span class="stat-small" id="vegetation-status">植被未同步</span>
+  </aside>
+  <div class="hint">左键拖动 · 平移　　右键拖动 · 旋转 / 俯仰　　滚轮 · 缩放</div>
+  <aside class="legend" aria-label="雪道图例">
+    <div class="legend-title">MAP KEY <span class="legend-note">社区坐标 · 待官方核对</span></div>
+    <div class="legend-items">
+      <span><i class="swatch green"></i> 初级</span>
+      <span><i class="swatch blue"></i> 中级</span>
+      <span><i class="swatch black"></i> 高级</span>
+      <span><i class="swatch orange"></i> 缆车</span>
+      <span><i class="swatch gray"></i> 未分级</span>
+    </div>
+  </aside>
+  <section class="feature-panel" id="feature-panel" hidden>
+    <button class="close" id="close-panel" title="关闭">×</button>
+    <div class="eyebrow" id="feature-type"></div>
+    <h2 id="feature-name"></h2>
+    <p id="feature-details"></p>
+    <p class="source-warning">位置来源：OpenStreetMap 社区数据，尚未通过官方雪场实测核对。</p>
+  </section>
+  <div class="loading" id="loading"><div class="loading-ring"></div><div>正在初始化三维地形…</div></div>
+  <script src="./vendor/maplibre-gl.js" onerror="window.__maplibreLoadError = true"></script>
+  <script src="./data/resorts.js?v=20261112-16"></script>
+  <script src="./scene.js?v=20261112-16" defer></script>
+</body>
+</html>

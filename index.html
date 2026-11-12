@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta name="description" content="探索中国16座滑雪场的三维地形、雪道与附近雪场。社区地图数据，仅供展示参考。"><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#091c2a"><title>中国滑雪地图 · Snow Atlas</title><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="./vendor/maplibre-gl.css"><link rel="stylesheet" href="./atlas.css?v=20261112-16"></head>
+<body>
+<main id="atlas-map" aria-label="中国滑雪场地图"></main>
+<div class="atmosphere" aria-hidden="true"></div>
+<header class="atlas-header"><div class="atlas-brand"><div class="brand-mark">△</div><div><div class="brand-kicker">SNOW ATLAS <span> / CHINA</span></div><h1>中国滑雪地图</h1><div class="brand-sub">16座主要户外滑雪场 · 三维地形图集</div></div></div><div class="header-controls"><button type="button" id="btn-list" aria-expanded="false">☰ <span>雪场名单</span><span class="mini-count">16</span></button><button type="button" id="btn-home" title="返回中国全览">⌖ <span>全国视角</span></button></div></header>
+<div id="atlas-message" role="status" aria-live="polite">16家滑雪场 · 公开线路数据持续核查 · 名称全部显示</div>
+<div class="map-help" id="map-help">滚轮放大 / 缩小 <span>·</span> 左键拖动 <span>·</span> 点击名称打开雪场 <span>·</span> 点击名称进入三维雪场</div>
+<div class="scale-chip" id="zoom-chip">CHINA / OVERVIEW</div>
+<section class="catalog" id="catalog" aria-label="按规模排序的雪场名单" hidden><div class="catalog-top"><div><div class="catalog-eyebrow">THE RESORTS / 16</div><h2>雪场规模排序</h2><p>按OSM已测绘雪道长度，非官方排名</p></div><button id="btn-close-list" aria-label="关闭名单">×</button></div><div id="resort-list" class="resort-list"></div><div class="catalog-foot">点击雪场名称先定位，也可以直接点地图上的雪场名称进入3D场景。</div></section>
+<div id="resort-overlay" class="resort-overlay" hidden role="dialog" aria-label="滑雪场三维地形界面" aria-modal="true"><iframe id="scene-frame" title="滑雪场三维地形"></iframe><button id="btn-back" class="btn-back">← 返回中国地图</button></div>
+<footer class="atlas-foot"><span>MAP FRAMEWORK · v0.8</span><span>点位及规模数据来自社区GIS，未作官方测绘核验 · 底图边界仅供设计预览</span></footer>
+<script src="./vendor/maplibre-gl.js"></script><script src="./data/resorts.js?v=20261112-16"></script><script src="./atlas.js?v=20261112-16" defer></script></body></html>
