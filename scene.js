@@ -18,6 +18,8 @@
     bbox: [42.085, 127.463, 42.124, 127.528], // south,west,north,east
   });
   const elevationReady=fetch('./data/elevation.json').then(r=>r.ok?r.json():{}).then(d=>d[resort.id]||{}).catch(()=>({}));
+  const metricsReady=fetch('./data/trail-metrics.json').then(r=>r.ok?r.json():{}).then(d=>d[resort.id]||{}).catch(()=>({}));
+  let trailMetrics={};
   let elevationInfo=null,sceneBearing=SETTINGS.bearing;
   const byId = (id) => document.getElementById(id);
   const emptyGeojson = () => ({type: 'FeatureCollection', features: []});
@@ -102,17 +104,39 @@
       const lo=elevationInfo.low.coordinates,hi=elevationInfo.high.coordinates;
       const center=[lo[0]*.6+hi[0]*.4,lo[1]*.6+hi[1]*.4];
       const bearing=Math.atan2((hi[0]-lo[0])*Math.cos(lo[1]*Math.PI/180),hi[1]-lo[1])*180/Math.PI;
-      map.easeTo({center,bearing,pitch:82,zoom:Math.min(16.2,overviewZoom+1.55),padding:{top:30,bottom:30,left:20,right:20},duration});
+      map.easeTo({center,bearing,pitch:84,zoom:Math.min(16.2,overviewZoom+1.55),padding:{top:30,bottom:30,left:20,right:20},duration});
     }else if(dataBounds)map.fitBounds(dataBounds,{padding:viewPadding(),bearing:sceneBearing,pitch:SETTINGS.pitch,duration,maxZoom:14.2});
     else map.easeTo({center:SETTINGS.center,zoom:SETTINGS.zoom,pitch:viewMode==='mountain'?82:SETTINGS.pitch,bearing:sceneBearing,duration});
+    configureOrbit();
     viewButton.setAttribute('aria-pressed',String(viewMode==='mountain'));
     viewText.textContent=viewMode==='mountain'?'山前 · 切全览':'全览 · 切山前';
     viewButton.title=viewMode==='mountain'?'当前为低机位山前视角，点击切换原全览视角':'当前为原全览视角，点击切换低机位山前视角';
   };
   viewButton.addEventListener('click',()=>{viewMode=viewMode==='mountain'?'overview':'mountain';reset();});
+  function configureOrbit(){
+    const locked=viewMode==='mountain';
+    for(const h of [map.dragPan,map.dragRotate,map.touchZoomRotate,map.touchPitch,map.boxZoom]){if(h)locked?h.disable():h.enable();}
+    map.scrollZoom.enable({around:'center'});
+    document.querySelector('.hint').textContent=locked?'拖动绕雪场中心旋转 · 滚轮缩放 · 俯仰与平移已锁定':'左键平移 · 右键旋转 / 俯仰 · 滚轮缩放';
+  }
+  const orbitPointers=new Map();let orbitGesture=null,orbitMoved=false;
+  const canvas=map.getCanvas();
+  canvas.addEventListener('pointerdown',e=>{
+    if(viewMode!=='mountain'||e.button>0)return;
+    orbitPointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    const ps=[...orbitPointers.values()];orbitGesture={x:e.clientX,bearing:map.getBearing(),zoom:map.getZoom(),distance:ps.length===2?Math.hypot(ps[1].x-ps[0].x,ps[1].y-ps[0].y):null};orbitMoved=false;
+  });
+  canvas.addEventListener('pointermove',e=>{
+    if(viewMode!=='mountain'||!orbitPointers.has(e.pointerId)||!orbitGesture)return;
+    orbitPointers.set(e.pointerId,{x:e.clientX,y:e.clientY});const ps=[...orbitPointers.values()];
+    if(ps.length===2&&orbitGesture.distance){const distance=Math.hypot(ps[1].x-ps[0].x,ps[1].y-ps[0].y);map.jumpTo({zoom:orbitGesture.zoom+Math.log2(Math.max(1,distance)/orbitGesture.distance)});orbitMoved=true;}
+    else if(ps.length===1&&Math.abs(e.clientX-orbitGesture.x)>4){map.jumpTo({bearing:orbitGesture.bearing-(e.clientX-orbitGesture.x)*.22,pitch:84});orbitMoved=true;}
+  });
+  const endOrbit=e=>{orbitPointers.delete(e.pointerId);orbitGesture=null;};canvas.addEventListener('pointerup',endOrbit);canvas.addEventListener('pointercancel',endOrbit);
+  canvas.addEventListener('click',e=>{if(viewMode==='mountain'&&orbitMoved){e.stopImmediatePropagation();orbitMoved=false;}},true);
   byId('btn-reset').addEventListener('click', reset);
   byId('btn-north').addEventListener('click', () => map.easeTo({bearing: 0, duration: 700}));
-  byId('close-panel').addEventListener('click', () => byId('feature-panel').hidden = true);
+  byId('close-panel').addEventListener('click', () => {byId('feature-panel').hidden=true;if(map.getSource('selected-piste'))map.getSource('selected-piste').setData(emptyGeojson());});
   window.addEventListener('keydown', (event) => {
     if (event.target instanceof HTMLInputElement) return;
     if (event.key.toLowerCase() === 'r') reset();
@@ -214,21 +238,47 @@
       paint: {'line-color': '#fffaf5', 'line-width': ['interpolate',['linear'],['zoom'],10,3.5,16,7.2]}});
     map.addLayer({id: 'lift-lines', type: 'line', source: 'lifts',
       paint: {'line-color': '#e7894c', 'line-width': ['interpolate',['linear'],['zoom'],10,1.8,16,3.6], 'line-dasharray': [2.5,1.1]}});
-    for (const layer of ['piste-lines','lift-lines']) {
-      map.on('mouseenter',layer,() => map.getCanvas().style.cursor = 'pointer');
-      map.on('mouseleave',layer,() => map.getCanvas().style.cursor = '');
-      map.on('click',layer,(e) => {
-        if (!e.features || !e.features.length) return;
-        const p = e.features[0].properties || {};
-        const isLift = layer === 'lift-lines';
-        byId('feature-type').textContent = isLift ? 'LIFT · 缆车' : 'PISTE · 雪道';
-        byId('feature-name').textContent = p.name || p.ref || (isLift ? '未命名缆车' : '未命名雪道');
-        byId('feature-details').textContent = isLift ?
-          `设施类型：${p.aerialway || '未记录'} · OSM Way ${p.osm_id || '未知'}` :
-          `社区难度标签：${p.difficulty || '未记录'} · OSM Way ${p.osm_id || '未知'}`;
-        byId('feature-panel').hidden = false;
-      });
+    map.setLayoutProperty('lift-lines','visibility','none');map.setLayoutProperty('lift-casing','visibility','none');
+    map.addSource('lift-structures',{type:'geojson',data:emptyGeojson()});
+    map.addLayer({id:'lift-structures-3d',type:'fill-extrusion',source:'lift-structures',paint:{'fill-extrusion-color':['match',['get','part'],'cable','#8d6841','beam','#818d91','#65767d'],'fill-extrusion-height':['get','top'],'fill-extrusion-base':['get','base'],'fill-extrusion-opacity':1,'fill-extrusion-vertical-gradient':true}});
+    map.addSource('selected-piste',{type:'geojson',data:emptyGeojson()});
+    map.addLayer({id:'selected-piste-glow',type:'line',source:'selected-piste',paint:{'line-color':'#fff7bc','line-width':12,'line-opacity':.7,'line-blur':3}});
+    map.addLayer({id:'selected-piste-line',type:'line',source:'selected-piste',paint:{'line-color':'#ffb329','line-width':5}});
+    map.addLayer({id:'piste-hit-area',type:'line',source:'pistes',paint:{'line-color':'#000','line-width':18,'line-opacity':0.01}});
+    map.on('mouseenter','piste-hit-area',()=>map.getCanvas().style.cursor='pointer');
+    map.on('mouseleave','piste-hit-area',()=>map.getCanvas().style.cursor='');
+    const selectPiste=e=>{
+      if(!e.features?.length||orbitMoved)return;
+      const feature=e.features[0],p=feature.properties||{},metric=trailMetrics[String(p.osm_id||feature.id)]||{};
+      map.getSource('selected-piste').setData({type:'FeatureCollection',features:[{type:'Feature',properties:{},geometry:feature.geometry}]});
+      byId('feature-type').textContent='PISTE · 雪道';byId('feature-name').textContent=p.name||p.ref||'雪道';
+      const length=Number.isFinite(metric.lengthMeters)?(metric.lengthMeters>=1000?(metric.lengthMeters/1000).toFixed(2)+' km':metric.lengthMeters+' m'):'暂缺';
+      const slope=Number.isFinite(metric.maxSlopeDegrees)?'≈ '+metric.maxSlopeDegrees+'°':'暂缺';
+      byId('feature-details').textContent=`线路长度：${length} · 最大坡度：${slope}（DEM每80米采样估算，非官方最大坡度）`;
+      byId('feature-panel').hidden=false;
+    };
+    map.getCanvas().addEventListener('click',event=>{
+      const rect=map.getCanvas().getBoundingClientRect(),x=event.clientX-rect.left,y=event.clientY-rect.top;
+      const features=map.queryRenderedFeatures([[x-9,y-9],[x+9,y+9]],{layers:['piste-hit-area','piste-lines']});
+      if(features.length)selectPiste({features});
+    });
+  }
+  function installLiftStructures(data){
+    const features=[];
+    const polygon=(x,y,dx,dy,part,base,top)=>{
+      const lon=dx/(111200*Math.cos(y*Math.PI/180)),lat=dy/111200;
+      features.push({type:'Feature',properties:{part,base,top},geometry:{type:'Polygon',coordinates:[[[x-lon,y-lat],[x+lon,y-lat],[x+lon,y+lat],[x-lon,y+lat],[x-lon,y-lat]]]}});
+    };
+    for(const f of data.lifts.features){
+      const cs=f.geometry.coordinates;let walked=0,next=0;
+      for(let i=1;i<cs.length;i++){
+        const a=cs[i-1],b=cs[i],sx=111200*Math.cos((a[1]+b[1])*Math.PI/360),dx=(b[0]-a[0])*sx,dy=(b[1]-a[1])*111200,len=Math.hypot(dx,dy);if(!len)continue;
+        const nx=-dy/len*.5/sx,ny=dx/len*.5/111200;
+        features.push({type:'Feature',properties:{part:'cable',base:10.8,top:11.2},geometry:{type:'Polygon',coordinates:[[[a[0]+nx,a[1]+ny],[b[0]+nx,b[1]+ny],[b[0]-nx,b[1]-ny],[a[0]-nx,a[1]-ny],[a[0]+nx,a[1]+ny]]]}});
+        while(next<=walked+len){const t=(next-walked)/len,x=a[0]+(b[0]-a[0])*t,y=a[1]+(b[1]-a[1])*t;polygon(x,y,.65,.65,'tower',0,11);polygon(x,y,3,.4,'beam',10.4,11.3);next+=160;}walked+=len;
+      }
     }
+    map.getSource('lift-structures').setData({type:'FeatureCollection',features});
   }
 
   function installNearby(){
@@ -418,6 +468,8 @@
     }
     map.getSource('pistes').setData(data.pistes);
     map.getSource('lifts').setData(data.lifts);
+    trailMetrics=await metricsReady;
+    installLiftStructures(data);
     elevationInfo=await elevationReady;
     if(Number.isFinite(elevationInfo.bearing))sceneBearing=elevationInfo.bearing;
     installElevationMarkers();
