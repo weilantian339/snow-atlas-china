@@ -8,6 +8,7 @@ if (!window.maplibregl || !resorts.length) { $('atlas-message').textContent = '�
 const style = {
  version:8, name:'China · Resort Atlas',
  sources:{
+  'provinces':{type:'geojson',data:'./data/provinces.geojson',attribution:'Province outlines: DataV GeoAtlas'},
   'world':{type:'geojson',data:'./data/world.geojson', attribution:'Natural Earth, public domain (simplified overview)'},
   'china':{type:'geojson',data:'./data/china.geojson', attribution:'Natural Earth (overview outline, not authoritative)'}
  },
@@ -16,6 +17,7 @@ const style = {
   {id:'land',type:'fill',source:'world',paint:{'fill-color':'#244458','fill-opacity':.65}},
   {id:'country-edges',type:'line',source:'world',paint:{'line-color':'#668394','line-opacity':.3,'line-width':.65}},
   {id:'mainland',type:'fill',source:'china',paint:{'fill-color':'#d8e7e8','fill-opacity':.98}},
+  {id:'province-lines',type:'line',source:'provinces',paint:{'line-color':'#7e9da6','line-opacity':0.24,'line-width':0.65}},
   {id:'outline',type:'line',source:'china',paint:{'line-color':'#eaf7f8','line-width':1.1,'line-opacity':.95}}
  ]
 };
@@ -29,54 +31,44 @@ $('atlas-map').appendChild(labelLayer);
 let framePending=false;
 function fitChina(){map.fitBounds(overviewBounds,{padding:{top:112,right:45,bottom:75,left:45},duration:950,maxZoom:4.05});}
 function overlaps(a,b,pad=5){return !(a.x+a.w+pad<b.x||b.x+b.w+pad<a.x||a.y+a.h+pad<b.y||b.y+b.h+pad<a.y);}
+const labelNodes=new Map();
+let needsLayout=true;
 function layoutLabels(){
  if(isOpen)return;
  const w=map.getContainer().clientWidth,h=map.getContainer().clientHeight;
- const placed=[];
- labelLayer.replaceChildren();
- const visible=resorts.map(r=>({r,p:map.project(r.center)}))
-  .filter(o=>o.p.x>-140&&o.p.x<w+140&&o.p.y>-85&&o.p.y<h+85)
-  .sort((a,b)=>a.r.rank-b.r.rank);
- for(const {r,p} of visible){
-   const label=document.createElement('button');label.type='button';
-   label.className='pin pin-name resort-label'+(r.id==='wanda'?' is-wanda':'');
-   label.textContent=r.name;
-   label.title='打开'+r.name+'三维地图';
-   label.setAttribute('aria-label','进入三维雪场：'+r.name);
-   label.addEventListener('click',()=>openResort(r));
-   labelLayer.appendChild(label);
-   const bw=Math.ceil(label.offsetWidth||r.name.length*13+34),bh=Math.ceil(label.offsetHeight||35);
-   // Candidate stagger positions in pixels. Each connector starts at exact resort coordinates.
-   const offsets=[[0,-32],[0,32],[82,-19],[-82,-19],[98,26],[-98,26],[0,-69],[0,68],[145,-42],[-145,-42],[148,36],[-148,36],[0,-106],[0,103],[185,0],[-185,0]];
-   const prev=anchors.get(r.id);if(prev)offsets.unshift(prev);
-   let best=null,score=Infinity;
-   for(const [dx,dy] of offsets){
-     const box={x:p.x+dx-bw/2,y:p.y+dy-bh/2,w:bw,h:bh};
-     const collision=placed.reduce((n,b)=>n+(overlaps(box,b)?1:0),0);
-     const out=Math.max(0,20-box.x)+Math.max(0,box.x+bw-(w-20))+Math.max(0,22-box.y)+Math.max(0,box.y+bh-(h-25));
-     const header=(box.y<148&&(box.x<375||box.x+bw>w-350))?1:0;
-     let value=collision*30000+header*15000+out*300+Math.hypot(dx,dy);
-     if(prev&&prev[0]===dx&&prev[1]===dy)value-=12; // reduce jitter during pan
-     if(value<score){score=value;best={box,dx,dy};}
-   }
-   const b=best.box;
-   label.style.left=(b.x+b.w/2)+'px';label.style.top=(b.y+b.h/2)+'px';
-   placed.push(b);anchors.set(r.id,[best.dx,best.dy]);
-   if(Math.hypot(best.dx,best.dy)>42){
-     const x1=p.x,y1=p.y,x2=b.x+b.w/2,y2=b.y+b.h/2;
-     const leader=document.createElement('div');leader.className='resort-leader';
-     leader.style.left=x1+'px';leader.style.top=y1+'px';
-     leader.style.width=Math.hypot(x2-x1,y2-y1)+'px';
-     leader.style.transform='rotate('+Math.atan2(y2-y1,x2-x1)+'rad)';
-     labelLayer.insertBefore(leader,label);
-   }
-   const point=document.createElement('span');point.className='resort-anchor';
-   point.style.left=p.x+'px';point.style.top=p.y+'px';
-   labelLayer.insertBefore(point,label);
+ const visible=resorts.map(r=>({r,p:map.project(r.center)})).filter(o=>o.p.x>-60&&o.p.x<w+60&&o.p.y>-60&&o.p.y<h+60);
+ for(const r of resorts){
+  if(labelNodes.has(r.id))continue;
+  const label=document.createElement('button');label.type='button';label.className='pin pin-name resort-label'+(r.id==='wanda'?' is-wanda':'');label.textContent=r.name;label.setAttribute('aria-label','进入三维雪场：'+r.name);label.onclick=()=>openResort(r);
+  const point=document.createElement('span');point.className='resort-anchor';
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.classList.add('resort-elbow');
+  const path=document.createElementNS(svg.namespaceURI,'path');svg.appendChild(path);labelLayer.append(svg,point,label);labelNodes.set(r.id,{label,point,svg,path});
  }
- const z=map.getZoom();
- $('zoom-chip').textContent=z<5?'CHINA / OVERVIEW':z<7.3?'REGION / EXPLORE':'RESORT / SELECT';
- $('atlas-message').textContent='点击雪场名称进入三维地图 · 全国范围不隐藏雪场名称';
+ const active=new Set(visible.map(o=>o.r.id));for(const [id,n] of labelNodes){for(const el of [n.label,n.point,n.svg])el.style.display=active.has(id)?'':'none';}
+ if(needsLayout){
+  const placed=[];
+  // Stable geographic order, previous offsets preferred; exhaustive grid avoids overlap.
+  for(const {r,p} of visible.sort((a,b)=>b.r.center[1]-a.r.center[1]||a.r.center[0]-b.r.center[0])){
+   const n=labelNodes.get(r.id),bw=n.label.offsetWidth,bh=n.label.offsetHeight;
+   const candidates=[];const prev=anchors.get(r.id);if(prev)candidates.push(prev);
+   for(let radius=0;radius<=Math.max(w,h);radius+=24){for(let angle=0;angle<16;angle++){const t=angle*Math.PI/8;candidates.push([Math.cos(t)*radius,Math.sin(t)*radius-32]);}}
+   let best=null,score=Infinity;
+   for(const [dx,dy] of candidates){
+    const x=Math.max(12,Math.min(w-bw-12,p.x+dx-bw/2)),y=Math.max(150,Math.min(h-bh-70,p.y+dy-bh/2));const box={x,y,w:bw,h:bh};
+    const collisions=placed.filter(b=>overlaps(box,b,10)).length;
+    const v=collisions*1e8+Math.hypot(x+bw/2-p.x,y+bh/2-p.y)+(prev?Math.hypot(dx-prev[0],dy-prev[1])*.12:0);
+    if(v<score){score=v;best=box;}
+   }
+   placed.push(best);anchors.set(r.id,[best.x+best.w/2-p.x,best.y+best.h/2-p.y]);
+  }
+  needsLayout=false;
+ }
+ for(const {r,p} of visible){const n=labelNodes.get(r.id),[dx,dy]=anchors.get(r.id)||[0,-32];const x=p.x+dx,y=p.y+dy;
+  n.label.style.left=x+'px';n.label.style.top=y+'px';n.point.style.left=p.x+'px';n.point.style.top=p.y+'px';
+  const edge=x+(p.x<x?-1:1)*n.label.offsetWidth/2;
+  n.path.setAttribute('d',`M ${p.x} ${p.y} L ${edge+(p.x<edge?-14:14)} ${y} L ${edge} ${y}`);
+ }
+ $('zoom-chip').textContent=map.getZoom()<5?'CHINA / OVERVIEW':'REGION / EXPLORE';
 }
 function renderPins(){
  if(framePending)return;framePending=true;
@@ -134,8 +126,9 @@ fetch('./data/coverage.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).the
 }).catch(e=>console.info('[Snow Atlas] Coverage not available:',e.message));
 map.on('load',()=>{fitChina();renderPins();});
 map.on('move',renderPins);
+map.on('zoomend',()=>{needsLayout=true;renderPins();});
 map.on('moveend',renderPins);
-map.on('resize',renderPins);
+map.on('resize',()=>{needsLayout=true;renderPins();});
 map.on('error',e=>{console.warn('[Snow Atlas] Overview map warning:',e.error?.message||e);});
 window.__snowAtlasOverview=map;
 })();
