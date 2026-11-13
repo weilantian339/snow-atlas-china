@@ -382,6 +382,7 @@
   // A single explicit toggle shows ALL loaded objects even when zoomed out.
   // Features without source names are explicitly marked '未命名 + OSM ID';
   // those labels are NOT invented official piste or lift names.
+  window.snowAtlasFilterNames=v=>{window.snowAtlasRunFilter=v;updateNameVisibility();};
   let nameMarkers = [];
   let labelData = null;
   let allNamesVisible = false;
@@ -389,7 +390,7 @@
   const labelsButtonText = byId('label-toggle-text');
   function updateNameVisibility() {
     for (const item of nameMarkers) {
-      item.marker.getElement().style.display = allNamesVisible ? '' : 'none';
+      const v=window.snowAtlasRunFilter||'all';const visible=item.kind!=='piste'||v==='all'||(v==='easy'?['novice','easy']:v==='advanced'?['advanced','expert','freeride']:[v]).includes(item.difficulty);item.marker.getElement().style.display = allNamesVisible&&visible ? '' : 'none';
     }
   }
   labelsButton.addEventListener('click', () => {
@@ -437,7 +438,7 @@
         el.title = (kind === 'lift' ? '索道' : '雪道') + ' · OSM数据，尚未核对官方名称和线位';
         const marker = new maplibregl.Marker({element:el,anchor:'center',offset:[0,0]})
           .setLngLat(at).addTo(map);
-        nameMarkers.push({marker,kind,unnamed:!name});
+        nameMarkers.push({marker,kind,difficulty:p.difficulty,unnamed:!name});
       }
     }
     updateNameVisibility();
@@ -503,9 +504,14 @@
           overviewZoom=Math.max(resort.id==='wanda'?12.9:12,camera.zoom);
           map.setMinZoom(overviewZoom);
         }
-        reset();
+        const cameraValues=(new URLSearchParams(location.search).get('camera')||'').split(',').map(Number);
+        if(cameraValues.length===5&&cameraValues.every(Number.isFinite)&&Math.abs(cameraValues[0]-resort.center[0])<.5&&Math.abs(cameraValues[1]-resort.center[1])<.5){
+          viewMode=new URLSearchParams(location.search).get('mode')==='overview'?'overview':'mountain';configureOrbit();
+          map.jumpTo({center:cameraValues.slice(0,2),zoom:Math.max(overviewZoom,Math.min(17,cameraValues[2])),bearing:cameraValues[3],pitch:Math.max(0,Math.min(85,cameraValues[4]))});
+        }else reset();
       }
     }
+    window.snowAtlasSceneFeatures(map,resort,()=>viewMode);
     const namedCount=[...data.pistes.features,...data.lifts.features].filter(f=>String(f.properties?.name_zh||f.properties?.name||f.properties?.ref||'').trim()).length;
     countEl.textContent=`雪道 ${n} · 索道 ${m} · 有名称 ${namedCount}/${n+m}`;
     setStatus('已加载公开OSM线路 · 地理位置及名称尚未官方核验','ok');
@@ -548,5 +554,6 @@
   }, 16000);
   window.__snowAtlasMap = map; // for local debugging in Edge DevTools
 })();
+
 
 
