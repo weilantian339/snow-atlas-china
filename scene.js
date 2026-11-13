@@ -26,7 +26,7 @@
   const emptyGeojson = () => ({type: 'FeatureCollection', features: []});
   const statusEl = byId('status-text'), dotEl = byId('status-dot'), countEl = byId('feature-count');
   const coarsePointer = () => window.matchMedia('(pointer: coarse)').matches;
-  const mobile = () => window.innerWidth <= 760 || (coarsePointer() && window.innerHeight <= 600);
+  const mobile = () => window.innerWidth <= 760 || (window.innerHeight <= 520 && window.innerWidth > window.innerHeight) || (coarsePointer() && window.innerHeight <= 600);
   // Keep the full network inside the usable map, including short landscape screens.
   const viewPadding = () => {
     if (!mobile()) return {top:145,bottom:120,left:115,right:115};
@@ -179,7 +179,7 @@
       const distance=Math.hypot(ps[1].x-ps[0].x,ps[1].y-ps[0].y);
       queueOrbit({center:orbitGesture.center,pitch:orbitGesture.pitch,bearing:orbitGesture.bearing,zoom:Math.max(map.getMinZoom(),Math.min(map.getMaxZoom(),orbitGesture.zoom+Math.log2(Math.max(8,distance)/orbitGesture.distance)))});
     }else if(ps.length===1&&Math.abs(e.clientX-orbitGesture.x)>5){
-      queueOrbit({center:orbitGesture.center,pitch:orbitGesture.pitch,bearing:orbitGesture.bearing-(e.clientX-orbitGesture.x)*.22});
+      queueOrbit({center:orbitGesture.center,pitch:orbitGesture.pitch,bearing:orbitGesture.bearing+(e.clientX-orbitGesture.x)*.22});
     }
   },{passive:false});
   function endOrbit(e){

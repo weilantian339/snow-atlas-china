@@ -47,6 +47,24 @@
   const compactAttribution=()=>{const attribution=document.querySelector('.maplibregl-ctrl-attrib');if(attribution){attribution.removeAttribute('open');attribution.classList.remove('maplibregl-compact-show');return true;}return false;};
   window.snowAtlasCompactAttribution=compactAttribution;
   if(!compactAttribution()){const observer=new MutationObserver(()=>{if(compactAttribution())observer.disconnect();});observer.observe(document.getElementById('map'),{childList:true,subtree:true});}
-  const mount=()=>{const extras=document.querySelector('.scene-extras');if(extras&&extras.parentElement!==dock)dock.append(extras);};
+
+  const guide=document.createElement('dialog');guide.className='operation-guide';guide.setAttribute('aria-labelledby','operation-guide-title');
+  const guideTitle=document.createElement('h2');guideTitle.id='operation-guide-title';guideTitle.textContent=text('看山，也看雪道','Explore the mountain','山とコースを見渡す');
+  const guideLines=[
+    text(matchMedia('(pointer: coarse)').matches?'山前：单指绕山，双指缩放。全览：自由移动与旋转。':'山前：拖动绕山，滚轮缩放。全览：自由平移与旋转。','Mountain: drag to orbit, pinch or scroll to zoom. Overview: move freely.','山麓：ドラッグで回転、ピンチで拡大。全景：自由に移動。'),
+    text('底栏切视角、植被、名称；筛选雪道难度。','Use the bottom bar for views, trees, labels and run difficulty.','下のバーで視点・樹木・名称・難度を切り替え。'),
+    text('点雪道看长度与坡度，分享可保留当前视角。','Tap a run for length and gradient. Share saves this view.','コースをタップで距離と斜度。共有で今の視点を保存。')
+  ];
+  const guideBody=document.createElement('div');for(const line of guideLines){const p=document.createElement('p');p.textContent=line;guideBody.append(p);}
+  const dismiss=document.createElement('button');dismiss.className='extra-button';dismiss.textContent=text('开始看山','Explore','地図を見る');
+  let guideSeen=false;try{guideSeen=localStorage.getItem('snowatlas-guide-v1')==='seen';}catch{}
+  function acknowledgeGuide(){guideSeen=true;try{localStorage.setItem('snowatlas-guide-v1','seen');}catch{}}
+  dismiss.onclick=()=>guide.close();guide.addEventListener('close',acknowledgeGuide);
+  guide.append(guideTitle,guideBody,dismiss);document.body.append(guide);
+  const help=document.createElement('button');help.className='guide-reopen';help.textContent=text('操作说明','Quick guide','操作ガイド');help.onclick=()=>{sheet.close();guide.showModal();};sheet.append(help);
+  let guideScheduled=false;
+  const mount=()=>{const extras=document.querySelector('.scene-extras');if(extras&&extras.parentElement!==dock)dock.append(extras);
+    if(extras&&!guideSeen&&!guideScheduled){guideScheduled=true;requestAnimationFrame(()=>{if(!guideSeen&&!guide.open)guide.showModal();});}
+  };
   mount();window.snowAtlasMountActions=mount;
 })();
