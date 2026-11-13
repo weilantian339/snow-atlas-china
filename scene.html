@@ -1,15 +1,15 @@
 <!doctype html>
 <html lang="zh-CN">
-<head><meta name="description" content="探索中国16座滑雪场的三维地形、雪道与附近雪场。社区地图数据，仅供展示参考。">
+<head><meta name="description" content="探索中国24座滑雪场的三维地形、雪道与附近雪场。社区地图数据，仅供展示参考。">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#eaf1f5" />
   <title>雪场三维地形 | Snow Atlas</title>
   <link rel="preconnect" href="https://unpkg.com" crossorigin />
   <link rel="preconnect" href="https://s3.amazonaws.com" crossorigin />
-  <link href="./scene.css?v=features27" rel="stylesheet" />
+  <link href="./common-ui.css?v=mobile28" rel="stylesheet" /><link href="./scene.css?v=mobile28" rel="stylesheet" />
 <link href="./vendor/maplibre-gl.css" rel="stylesheet" />
-<style>.masthead{top:98px;left:32px}.tools{top:24px;right:24px}.resort-suffix{font-size:.58em}.scene-preview{position:fixed;top:77px;right:24px;z-index:8;font-size:11px;font-weight:700;letter-spacing:.04em;background:#eaf3f7ed;color:#315569;border:1px solid #c8dae1;border-radius:8px;padding:7px 10px}</style>
+
 </head>
 <body>
   <main id="map" aria-label="长白山万达滑雪场三维地形地图"></main>
@@ -51,7 +51,7 @@
   </section>
   <div class="loading" id="loading"><div class="loading-ring"></div><div>正在初始化三维地形…</div></div>
   <script src="./vendor/maplibre-gl.js" onerror="window.__maplibreLoadError = true"></script>
-  <script src="./data/resorts.js?v=features27"></script>
-  <script src="./cables.js?v=features27"></script><script src="./scene_features.js?v=features27"></script><script src="./scene.js?v=features27" defer></script>
-<script src="./i18n.js?v=features27"></script><script src="./extras.js?v=features27"></script></body>
+  <script src="./data/resorts.js?v=mobile28"></script>
+  <script src="./cables.js?v=mobile28"></script><script src="./scene_features.js?v=mobile28"></script><script src="./scene.js?v=mobile28" defer></script>
+<script src="./i18n.js?v=mobile28"></script><script src="./extras.js?v=mobile28"></script><script src="./scene-ui.js?v=mobile28"></script></body>
 </html>

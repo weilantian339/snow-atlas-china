@@ -25,8 +25,14 @@
   const byId = (id) => document.getElementById(id);
   const emptyGeojson = () => ({type: 'FeatureCollection', features: []});
   const statusEl = byId('status-text'), dotEl = byId('status-dot'), countEl = byId('feature-count');
-  const mobile = () => window.innerWidth <= 600;
-  const viewPadding = () => mobile() ? {top:180,bottom:175,left:28,right:28} : {top:145,bottom:120,left:115,right:115};
+  const coarsePointer = () => window.matchMedia('(pointer: coarse)').matches;
+  const mobile = () => window.innerWidth <= 760 || (coarsePointer() && window.innerHeight <= 600);
+  // Keep the full network inside the usable map, including short landscape screens.
+  const viewPadding = () => {
+    if (!mobile()) return {top:145,bottom:120,left:115,right:115};
+    const h=window.innerHeight,short=h<500;
+    return {top:Math.min(short?68:100,h*.2),bottom:Math.min(short?88:125,h*.25),left:20,right:20};
+  };
   let map;
   function setStatus(message, state = '') {
     statusEl.textContent = message;
@@ -96,6 +102,7 @@
   if (mobile()) document.querySelector('.hint').textContent='单指平移 · 双指缩放、旋转 · 双指上下滑动倾斜';
   map.getCanvas().addEventListener('contextmenu', (event) => event.preventDefault());
   let dataBounds = null;
+  const pisteById = new Map();
   let viewMode='mountain',overviewZoom=13;
   const viewButton=byId('btn-view');
   const viewText=byId('view-toggle-text');
@@ -116,34 +123,92 @@
   viewButton.addEventListener('click',()=>{viewMode=viewMode==='mountain'?'overview':'mountain';reset();});
   function configureOrbit(){
     const locked=viewMode==='mountain';
-    for(const h of [map.dragPan,map.dragRotate,map.touchZoomRotate,map.touchPitch,map.boxZoom]){if(h)locked?h.disable():h.enable();}
+    clearOrbit();
+    for(const h of [map.dragPan,map.dragRotate,map.touchZoomRotate,map.touchPitch,map.boxZoom,map.doubleClickZoom,map.keyboard]){if(h)locked?h.disable():h.enable();}
     map.scrollZoom.enable({around:'center'});
-    document.querySelector('.hint').textContent=locked?'拖动绕雪场中心旋转 · 滚轮缩放 · 俯仰与平移已锁定':'左键平移 · 右键旋转 / 俯仰 · 滚轮缩放';
+    document.querySelector('.hint').textContent=locked?(coarsePointer()?'单指绕山旋转 · 双指缩放':'拖动绕雪场中心旋转 · 滚轮缩放 · 俯仰与平移已锁定'):(coarsePointer()?'单指平移 · 双指缩放、旋转':'左键平移 · 右键旋转 / 俯仰 · 滚轮缩放');
+    viewButton.setAttribute('aria-pressed',String(locked));
+    viewText.textContent=locked?'山前 · 切全览':'全览 · 切山前';
+    document.body.dataset.view=locked?'mountain':'overview';
   }
-  const orbitPointers=new Map();let orbitGesture=null,orbitMoved=false;
+  const orbitPointers=new Map();
+  let orbitGesture=null,orbitMoved=false,orbitFrame=0,pendingCamera=null,suppressTapUntil=0,lastPointerType='mouse';
   const canvas=map.getCanvas();
+  // CSS touch-action must be set before the first touch, otherwise Safari can cancel
+  // the second finger to scroll/zoom the document while the native map handlers are off.
+  canvas.style.touchAction='none';
+  canvas.parentElement.style.touchAction='none';
+  function flushOrbit(){
+    if(orbitFrame)cancelAnimationFrame(orbitFrame);
+    orbitFrame=0;
+    if(pendingCamera){const next=pendingCamera;pendingCamera=null;map.jumpTo(next);}
+  }
+  function clearOrbit(){
+    if(orbitFrame)cancelAnimationFrame(orbitFrame);
+    orbitFrame=0;pendingCamera=null;orbitPointers.clear();orbitGesture=null;
+  }
+  function startOrbit(){
+    flushOrbit();
+    const ps=[...orbitPointers.values()];
+    if(!ps.length){orbitGesture=null;return;}
+    const c=map.getCenter();
+    orbitGesture={x:ps[0].x,y:ps[0].y,bearing:map.getBearing(),pitch:map.getPitch(),center:[c.lng,c.lat],zoom:map.getZoom(),distance:ps.length===2?Math.hypot(ps[1].x-ps[0].x,ps[1].y-ps[0].y):0};
+  }
+  function queueOrbit(camera){
+    pendingCamera=camera;
+    if(!orbitFrame)orbitFrame=requestAnimationFrame(()=>{orbitFrame=0;flushOrbit();});
+  }
   canvas.addEventListener('pointerdown',e=>{
-    if(viewMode!=='mountain'||e.button>0)return;
-    orbitPointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
-    const ps=[...orbitPointers.values()];orbitGesture={x:e.clientX,bearing:map.getBearing(),zoom:map.getZoom(),distance:ps.length===2?Math.hypot(ps[1].x-ps[0].x,ps[1].y-ps[0].y):null};orbitMoved=false;
+    if(e.pointerType==='mouse'&&e.button!==0)return;
+    lastPointerType=e.pointerType||'mouse';
+    if(!orbitPointers.size){orbitMoved=false;suppressTapUntil=0;if(viewMode==='mountain')map.stop();}
+    orbitPointers.set(e.pointerId,{x:e.clientX,y:e.clientY,startX:e.clientX,startY:e.clientY});
+    if(orbitPointers.size>1)orbitMoved=true;
+    startOrbit();
   });
-  canvas.addEventListener('pointermove',e=>{
-    if(viewMode!=='mountain'||!orbitPointers.has(e.pointerId)||!orbitGesture)return;
-    orbitPointers.set(e.pointerId,{x:e.clientX,y:e.clientY});const ps=[...orbitPointers.values()];
-    if(ps.length===2&&orbitGesture.distance){const distance=Math.hypot(ps[1].x-ps[0].x,ps[1].y-ps[0].y);map.jumpTo({zoom:orbitGesture.zoom+Math.log2(Math.max(1,distance)/orbitGesture.distance)});orbitMoved=true;}
-    else if(ps.length===1&&Math.abs(e.clientX-orbitGesture.x)>4){map.jumpTo({bearing:orbitGesture.bearing-(e.clientX-orbitGesture.x)*.22,pitch:84});orbitMoved=true;}
-  });
-  const endOrbit=e=>{orbitPointers.delete(e.pointerId);orbitGesture=null;};canvas.addEventListener('pointerup',endOrbit);canvas.addEventListener('pointercancel',endOrbit);
-  canvas.addEventListener('click',e=>{if(viewMode==='mountain'&&orbitMoved){e.stopImmediatePropagation();orbitMoved=false;}},true);
+  // Window listeners finish a drag even when a finger/mouse crosses the canvas edge.
+  window.addEventListener('pointermove',e=>{
+    const pointer=orbitPointers.get(e.pointerId);
+    if(!pointer||!orbitGesture)return;
+    pointer.x=e.clientX;pointer.y=e.clientY;
+    if(Math.hypot(pointer.x-pointer.startX,pointer.y-pointer.startY)>7)orbitMoved=true;
+    if(viewMode!=='mountain')return;
+    if(e.cancelable)e.preventDefault();
+    const ps=[...orbitPointers.values()];
+    if(ps.length===2&&orbitGesture.distance>8){
+      const distance=Math.hypot(ps[1].x-ps[0].x,ps[1].y-ps[0].y);
+      queueOrbit({center:orbitGesture.center,pitch:orbitGesture.pitch,bearing:orbitGesture.bearing,zoom:Math.max(map.getMinZoom(),Math.min(map.getMaxZoom(),orbitGesture.zoom+Math.log2(Math.max(8,distance)/orbitGesture.distance)))});
+    }else if(ps.length===1&&Math.abs(e.clientX-orbitGesture.x)>5){
+      queueOrbit({center:orbitGesture.center,pitch:orbitGesture.pitch,bearing:orbitGesture.bearing-(e.clientX-orbitGesture.x)*.22});
+    }
+  },{passive:false});
+  function endOrbit(e){
+    if(!orbitPointers.has(e.pointerId))return;
+    flushOrbit();orbitPointers.delete(e.pointerId);
+    if(e.type==='pointercancel'||orbitMoved)suppressTapUntil=performance.now()+450;
+    // Rebase to the remaining finger rather than leaving one-finger rotation stuck.
+    startOrbit();
+  }
+  window.addEventListener('pointerup',endOrbit);
+  window.addEventListener('pointercancel',endOrbit);
+  window.addEventListener('blur',clearOrbit);
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)clearOrbit();});
+  canvas.addEventListener('click',e=>{if(performance.now()<suppressTapUntil||orbitMoved){e.preventDefault();e.stopImmediatePropagation();orbitMoved=false;}},true);
   byId('btn-reset').addEventListener('click', reset);
   byId('btn-north').addEventListener('click', () => map.easeTo({bearing: 0, duration: 700}));
-  byId('close-panel').addEventListener('click', () => {byId('feature-panel').hidden=true;if(map.getSource('selected-piste'))map.getSource('selected-piste').setData(emptyGeojson());});
+  function closeFeaturePanel(){
+    byId('feature-panel').hidden=true;
+    if(map.getSource('selected-piste'))map.getSource('selected-piste').setData(emptyGeojson());
+    document.dispatchEvent(new CustomEvent('snowatlas:trail-closed'));
+  }
+  byId('close-panel').addEventListener('click', closeFeaturePanel);
   window.addEventListener('keydown', (event) => {
-    if (event.target instanceof HTMLInputElement) return;
+    if (event.target instanceof Element && event.target.matches('input,select,textarea,[contenteditable="true"]')) return;
     if (event.key.toLowerCase() === 'r') reset();
     if (event.key.toLowerCase() === 'n') map.easeTo({bearing: 0, duration: 700});
-    if (event.key === 'Escape') byId('feature-panel').hidden = true;
+    if (event.key === 'Escape') closeFeaturePanel();
   });
+  configureOrbit();
 
   // v0.9: Light tree-canopy treatment uses only real OSM forest/wood polygons.
   // Grain patterns are illustrative; they are not satellite imagery or surveyed tree locations.
@@ -252,19 +317,42 @@
     map.on('mouseenter','piste-hit-area',()=>map.getCanvas().style.cursor='pointer');
     map.on('mouseleave','piste-hit-area',()=>map.getCanvas().style.cursor='');
     const selectPiste=e=>{
-      if(!e.features?.length||orbitMoved)return;
-      const feature=e.features[0],p=feature.properties||{},metric=trailMetrics[String(p.osm_id||feature.id)]||{};
+      if(!e.features?.length||orbitMoved||performance.now()<suppressTapUntil)return;
+      const hit=e.features[0],feature=pisteById.get(String(hit.properties?.osm_id||hit.id))||hit;
+      const p=feature.properties||{},metric=trailMetrics[String(p.osm_id||feature.id)]||{};
       map.getSource('selected-piste').setData({type:'FeatureCollection',features:[{type:'Feature',properties:{},geometry:feature.geometry}]});
       byId('feature-type').textContent='PISTE · 雪道';byId('feature-name').textContent=p.name||p.ref||'雪道';
       const length=Number.isFinite(metric.lengthMeters)?(metric.lengthMeters>=1000?(metric.lengthMeters/1000).toFixed(2)+' km':metric.lengthMeters+' m'):'暂缺';
       const slope=Number.isFinite(metric.maxSlopeDegrees)?'≈ '+metric.maxSlopeDegrees+'°':'暂缺';
       byId('feature-details').textContent=`线路长度：${length} · 最大坡度：${slope}（DEM每80米采样估算，非官方最大坡度）`;
       byId('feature-panel').hidden=false;
+      document.dispatchEvent(new CustomEvent('snowatlas:trail-selected'));
     };
     map.getCanvas().addEventListener('click',event=>{
+      if(event.detail>1||performance.now()<suppressTapUntil)return;
       const rect=map.getCanvas().getBoundingClientRect(),x=event.clientX-rect.left,y=event.clientY-rect.top;
-      const features=map.queryRenderedFeatures([[x-9,y-9],[x+9,y+9]],{layers:['piste-hit-area','piste-lines']});
-      if(features.length)selectPiste({features});
+      const radius=lastPointerType==='touch'?14:7;
+      const hits=map.queryRenderedFeatures([[x-radius,y-radius],[x+radius,y+radius]],{layers:['piste-hit-area','piste-lines']});
+      // A broad touch target should pick the closest line, not whichever tiled
+      // feature happens to be drawn last at a crossing or on parallel pistes.
+      const candidates=new Map();
+      for(const feature of hits){
+        const id=String(feature.properties?.osm_id||feature.id);
+        if(candidates.has(id))continue;
+        const cs=feature.geometry?.coordinates;
+        if(feature.geometry?.type!=='LineString'||!cs?.length)continue;
+        let distance=Infinity;
+        for(let i=1;i<cs.length;i++){
+          const a=map.project(cs[i-1]),b=map.project(cs[i]);
+          const dx=b.x-a.x,dy=b.y-a.y,d=dx*dx+dy*dy;
+          const t=d?Math.max(0,Math.min(1,((x-a.x)*dx+(y-a.y)*dy)/d)):0;
+          distance=Math.min(distance,Math.hypot(x-a.x-t*dx,y-a.y-t*dy));
+        }
+        candidates.set(id,{feature,distance});
+      }
+      const nearest=[...candidates.values()].sort((a,b)=>a.distance-b.distance)[0];
+      if(nearest)selectPiste({features:[nearest.feature]});
+      else if(!byId('feature-panel').hidden)closeFeaturePanel();
     });
   }
   function installLiftStructures(data){
@@ -486,6 +574,8 @@
     }
     map.getSource('pistes').setData(data.pistes);
     map.getSource('lifts').setData(data.lifts);
+    pisteById.clear();
+    for(const feature of data.pistes.features)pisteById.set(String(feature.properties?.osm_id||feature.id),feature);
     trailMetrics=await metricsReady;
     installLiftStructures(data);
     elevationInfo=await elevationReady;

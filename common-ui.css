@@ -1,0 +1,16 @@
+:root{--ink:#193c4c;--paper:#fafbf7;--warm:#cda16c;--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px)}
+button,select,input,a{-webkit-tap-highlight-color:transparent}button,select{touch-action:manipulation}button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid #ae7538;outline-offset:3px}
+.extra-button,.extra-select{min-height:44px;border:1px solid #cbd5d5;background:#fafbf7;color:#294653;border-radius:12px;padding:10px 14px;font:500 13px/1.2 system-ui;-webkit-appearance:none;appearance:none;cursor:pointer}
+.extra-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23294653' stroke-width='1.5'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");background-position:right 9px center;background-repeat:no-repeat;padding-right:30px}
+#tea-button{position:fixed;right:max(18px,env(safe-area-inset-right));bottom:calc(24px + var(--safe-bottom));z-index:10;border:1px solid #d9b782;background:#d5b586;color:#203b47;box-shadow:0 3px 14px #04121d22;font-size:12px;border-radius:24px;padding:10px 16px}
+#tea-dialog{box-sizing:border-box;border:1px solid #d8dfda;border-radius:22px;padding:22px;width:min(360px,calc(100vw - 32px));max-height:calc(100dvh - 32px);color:#294653;background:#fffdf8;overflow:auto;overscroll-behavior:contain;box-shadow:0 24px 90px #06172566}
+#tea-dialog::backdrop{background:#0a202ab8}
+#tea-dialog strong{font-size:17px;font-weight:600;display:block;margin-right:25px}
+#tea-dialog img{display:block;max-height:52dvh;width:100%;object-fit:contain;margin:18px 0;background:#fff;border-radius:10px}
+#tea-dialog .tea-actions{display:flex;gap:8px}#tea-dialog .tea-actions button:first-child{flex:1;background:#244b5a;color:white;border-color:#244b5a}#tea-dialog p:empty{display:none}
+.share-status{position:fixed;left:50%;bottom:calc(150px + var(--safe-bottom));transform:translateX(-50%);max-width:calc(100vw - 32px);background:#213e4ef5;color:#fff;padding:12px 16px;border:0;border-radius:12px;z-index:95;font:13px system-ui;box-shadow:0 5px 25px #102c3b26}
+input.share-status{width:calc(100vw - 32px);font-size:16px}
+@media(hover:hover){.extra-button:hover{filter:brightness(.97)}}
+@media(max-width:600px){#tea-button{right:12px;bottom:calc(20px + var(--safe-bottom));font-size:12px;min-height:44px}#tea-dialog{padding:18px} }
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
