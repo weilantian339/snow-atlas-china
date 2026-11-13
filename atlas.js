@@ -8,17 +8,17 @@ if (!window.maplibregl || !resorts.length) { $('atlas-message').textContent = 'å
 const style = {
  version:8, name:'China Â· Resort Atlas',
  sources:{
-  'provinces':{type:'geojson',data:'./data/provinces.geojson',attribution:'Province outlines: DataV GeoAtlas'},
+  'south-sea':{type:'geojson',data:'./data/south-sea.geojson'},'provinces':{type:'geojson',data:'./data/provinces.geojson',attribution:'Province outlines: DataV GeoAtlas'},
   'world':{type:'geojson',data:'./data/world.geojson', attribution:'Natural Earth, public domain (simplified overview)'},
   'china':{type:'geojson',data:'./data/china.geojson', attribution:'Natural Earth (overview outline, not authoritative)'}
  },
  layers:[
   {id:'base',type:'background',paint:{'background-color':'#071b2a'}},
   {id:'land',type:'fill',source:'world',paint:{'fill-color':'#244458','fill-opacity':.65}},
-  {id:'country-edges',type:'line',source:'world',paint:{'line-color':'#668394','line-opacity':.3,'line-width':.65}},
+  
   {id:'mainland',type:'fill',source:'china',paint:{'fill-color':'#d8e7e8','fill-opacity':.98}},
   {id:'province-lines',type:'line',source:'provinces',paint:{'line-color':'#7e9da6','line-opacity':0.24,'line-width':0.65}},
-  {id:'outline',type:'line',source:'china',paint:{'line-color':'#eaf7f8','line-width':1.1,'line-opacity':.95}}
+  {id:'south-sea-lines',type:'line',source:'south-sea',paint:{'line-color':'#d8e7e8','line-width':1.8}},{id:'outline',type:'line',source:'china',paint:{'line-color':'#eaf7f8','line-width':1.1,'line-opacity':.95}}
  ]
 };
 const map = new maplibregl.Map({container:'atlas-map',style,center:[104,37],zoom:3.05,minZoom:2.55,maxZoom:13,renderWorldCopies:false,dragRotate:false,pitchWithRotate:false,scrollZoom:true,maxPitch:0,antialias:false,pixelRatio:Math.min(devicePixelRatio||1,1.8)});

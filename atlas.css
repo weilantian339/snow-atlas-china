@@ -12,3 +12,5 @@
 .resort-elbow{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}.resort-elbow path{fill:none;stroke:#72b9bd;stroke-width:1;stroke-opacity:.65}
 
 #warmup{position:absolute;z-index:4;top:110px;left:16px;pointer-events:none;background:#112c39e8;color:#eef9f6;border-radius:9px;padding:6px 10px;font:12px system-ui}#warmup[hidden]{display:none}#warm-bar{display:block;width:100%;height:4px;margin-top:4px;accent-color:#52c2a9}@media(max-width:600px){#warmup{top:auto;bottom:30px;left:10px}}
+
+.resort-label:before,.resort-label:after{display:none!important}.brand-kicker,.brand-sub,.atlas-foot,.map-help,.catalog-eyebrow,.catalog-foot,#atlas-message{display:none}.resort-label{border-radius:5px!important;box-shadow:0 3px 10px #03172122!important;border-color:#d7d7cd!important}.resort-elbow path{stroke:#c49a68}.brand-mark{color:#d7ac76}.atlas-header h1{font-weight:500;letter-spacing:2px}.row-km.has-gis:after{display:none}

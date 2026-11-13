@@ -318,8 +318,8 @@
       ],
       "meters": 2939
     },
-    "bearing": 127,
-    "sampleCount": 247,
+    "bearing": 146,
+    "sampleCount": 170,
     "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
   },
   "galaxy": {

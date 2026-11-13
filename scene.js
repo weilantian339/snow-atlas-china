@@ -301,7 +301,7 @@
     const features=neighbors.map(r=>{const lat=.012,lon=lat/Math.cos(rad(r.center[1])),[x,y]=r.center;return {type:'Feature',properties:{id:r.id},geometry:{type:'LineString',coordinates:[[x-lon,y-lat],[x+lon,y-lat],[x+lon,y+lat],[x-lon,y+lat],[x-lon,y-lat]]}};});
     map.addSource('nearby-resorts',{type:'geojson',data:{type:'FeatureCollection',features}});
     map.addLayer({id:'nearby-resort-frames',type:'line',source:'nearby-resorts',paint:{'line-color':'#557c96','line-width':2,'line-dasharray':[3,3],'line-opacity':.8}});
-    const box=document.createElement('aside');box.className='nearby-resorts';
+    const box=document.createElement('aside');box.className='nearby-resorts';const toggle=document.createElement('button');toggle.className='nearby-toggle';toggle.textContent='附近雪场 '+neighbors.length;toggle.setAttribute('aria-expanded','false');toggle.onclick=()=>{const open=box.classList.toggle('expanded');toggle.setAttribute('aria-expanded',String(open));};box.appendChild(toggle);
     const title=document.createElement('div');title.textContent='20 km 内附近雪场 · 直线距离';box.appendChild(title);
     for(const r of neighbors){
       const button=document.createElement('button');button.textContent=r.name+' · '+r.km.toFixed(1)+' km ↗';button.onclick=()=>location.href='./scene.html?id='+encodeURIComponent(r.id);box.appendChild(button);

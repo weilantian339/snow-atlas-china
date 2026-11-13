@@ -50,3 +50,5 @@ h1{font-size:clamp(29px,3.15vw,46px);line-height:1.15;letter-spacing:-.045em;mar
 .elevation-marker{display:block;border:1px solid #d2b86b;background:#fff8dfed;color:#6d5214;border-radius:10px;padding:7px 11px;font-size:12px;font-weight:800;box-shadow:0 3px 12px #162c3626;white-space:nowrap}.elevation-low{background:#e8f7ffed;border-color:#83b2ca;color:#285e7a}
 
 .tools #btn-view{border-color:#79a1b4;background:#eaf5fa;color:#245269}.tools #btn-view span{display:inline}@media(max-width:600px){.tools{gap:4px}.tools button{padding:0 5px;font-size:12px}.tools #btn-view{flex:1.65}.tools #btn-view span{font-size:10px}}
+
+.nearby-toggle{font-weight:600}@media(max-width:600px){.nearby-resorts{top:auto;bottom:160px;left:12px;padding:3px 12px;max-width:220px}.nearby-resorts:not(.expanded)>:not(.nearby-toggle){display:none}.nearby-resorts.expanded{max-height:40vh;overflow:auto}.nearby-map-label{pointer-events:none;font-size:10px;padding:3px 5px}canvas{touch-action:none}}
