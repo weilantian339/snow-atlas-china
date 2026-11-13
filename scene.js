@@ -103,7 +103,7 @@
   map.getCanvas().addEventListener('contextmenu', (event) => event.preventDefault());
   let dataBounds = null;
   const pisteById = new Map();
-  let viewMode='mountain',overviewZoom=13;
+  let viewMode='overview',overviewZoom=13;
   const viewButton=byId('btn-view');
   const viewText=byId('view-toggle-text');
   const reset = () => {
