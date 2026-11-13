@@ -62,6 +62,7 @@
   dismiss.onclick=()=>guide.close();guide.addEventListener('close',acknowledgeGuide);
   guide.append(guideTitle,guideBody,dismiss);document.body.append(guide);
   const help=document.createElement('button');help.className='guide-reopen';help.textContent=text('操作说明','Quick guide','操作ガイド');help.onclick=()=>{sheet.close();guide.showModal();};sheet.append(help);
+  const credits=document.createElement('p');credits.className='data-attribution';credits.innerHTML='© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors (ODbL)</a> · AWS Terrain · ESA WorldCover 2021 · MapLibre';sheet.append(credits);
   let guideScheduled=false;
   const mount=()=>{const extras=document.querySelector('.scene-extras');if(extras&&extras.parentElement!==dock)dock.append(extras);
     if(extras&&!guideSeen&&!guideScheduled){guideScheduled=true;requestAnimationFrame(()=>{if(!guideSeen&&!guide.open)guide.showModal();});}

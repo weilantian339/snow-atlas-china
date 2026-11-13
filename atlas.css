@@ -48,3 +48,5 @@
 .maplibregl-ctrl-bottom-right{right:auto!important;left:10px;bottom:calc(1px + env(safe-area-inset-bottom))}
 .maplibregl-ctrl-attrib.maplibregl-compact{min-width:30px;min-height:30px;max-width:calc(100vw - 24px)}.maplibregl-ctrl-attrib.maplibregl-compact:not(.maplibregl-compact-show) .maplibregl-ctrl-attrib-inner{display:none}
 .maplibregl-ctrl-attrib.maplibregl-compact-show{margin-bottom:60px}
+
+.catalog-foot{display:block;font-size:9px;color:#7c8b8c;padding:10px 18px;border-top:1px solid #dce4de}

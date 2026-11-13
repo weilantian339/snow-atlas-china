@@ -24,7 +24,7 @@ const style = {
   {id:'south-sea-lines',type:'line',source:'south-sea',paint:{'line-color':'#d8e7e8','line-width':1.8}},{id:'outline',type:'line',source:'china',paint:{'line-color':'#eaf7f8','line-width':1.1,'line-opacity':.95}}
  ]
 };
-const map = new maplibregl.Map({container:'atlas-map',style,center:[104,37],zoom:3.05,minZoom:1.6,maxZoom:13,renderWorldCopies:false,dragRotate:false,pitchWithRotate:false,scrollZoom:true,maxPitch:0,attributionControl:{compact:true},antialias:false,pixelRatio:Math.min(devicePixelRatio||1,1.8)});
+const map = new maplibregl.Map({container:'atlas-map',style,center:[104,37],zoom:3.05,minZoom:1.6,maxZoom:13,renderWorldCopies:false,dragRotate:false,pitchWithRotate:false,scrollZoom:true,maxPitch:0,attributionControl:false,antialias:false,pixelRatio:Math.min(devicePixelRatio||1,1.8)});
 let lastResort=null;
 let isOpen=false;
 const anchors=new Map();
@@ -163,7 +163,7 @@ fetch('./data/coverage.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).the
 const routeCache=new Map();
 window.snowAtlasRoute=function(id){
  if(!resorts.some(r=>r.id===id))return Promise.reject(Error('Unknown resort'));
- if(!routeCache.has(id))routeCache.set(id,fetch('./data/resorts/'+id+'.geojson?v=mobile28',{cache:'force-cache'}).then(r=>{if(!r.ok)throw Error(r.status);return r.json();}).catch(e=>{routeCache.delete(id);throw e;}));
+ if(!routeCache.has(id))routeCache.set(id,window.snowData('./data/resorts/'+id+'.geojson').catch(e=>{routeCache.delete(id);throw e;}));
  return routeCache.get(id);
 };
 let pending=[...resorts],done=0,failed=0,workers=0;

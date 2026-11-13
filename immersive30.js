@@ -1,6 +1,7 @@
 (() => {
 'use strict';
 const language=document.documentElement.lang||'zh',t=(z,e,j)=>language==='en'?e:language==='ja'?j:z;
+const wechat=/MicroMessenger/i.test(navigator.userAgent);
 const mobile=()=>matchMedia('(pointer:coarse)').matches||innerWidth<=600||(innerWidth<=1024&&innerHeight<=600);
 const landscape=()=>mobile()&&innerWidth>innerHeight;
 const dock=document.getElementById('scene-dock');
@@ -10,15 +11,15 @@ let host=document;
 try{if(parent!==window&&parent.location.origin===location.origin)host=parent.document;}catch{}
 const actualFull=()=>Boolean(host.fullscreenElement||host.webkitFullscreenElement);
 let fallback=false;
-function syncFull(){const active=actualFull()||fallback;full.setAttribute('aria-pressed',String(active));full.setAttribute('aria-label',active?t('退出全屏','Exit full screen','全画面を終了'):t('全屏','Full screen','全画面'));full.title=full.getAttribute('aria-label');document.body.classList.toggle('fullscreen-active',active);}
+function syncFull(){const active=actualFull()||fallback;full.setAttribute('aria-pressed',String(active));full.setAttribute('aria-label',active?t('退出全屏','Exit full screen','全画面を終了'):t('全屏','Full screen','全画面'));if(wechat)full.setAttribute('aria-label',active?t('退出沉浸','Exit immersive view','没入モードを終了'):t('沉浸模式','Immersive view','没入モード'));full.title=full.getAttribute('aria-label');document.body.classList.toggle('fullscreen-active',active);}
 function toast(s){const n=document.createElement('div');n.className='share-status';n.textContent=s;document.body.append(n);setTimeout(()=>n.remove(),4000);}
 full.onclick=async()=>{
  try{
   if(actualFull()){await (host.exitFullscreen?.()||host.webkitExitFullscreen?.());}
   else if(fallback){fallback=false;document.body.classList.remove('immersive-fallback');}
   else{const root=host.documentElement,request=root.requestFullscreen||root.webkitRequestFullscreen;
-   if(request)await request.call(root);
-   else{fallback=true;document.body.classList.add('immersive-fallback');toast(t('已开启沉浸模式；此浏览器不支持网页全屏。','Immersive mode on; this browser does not support page fullscreen.','没入モード：このブラウザは全画面表示に未対応です。'));}
+   if(request&&!wechat)await request.call(root);
+   else{fallback=true;document.body.classList.add('immersive-fallback');toast(t('已开启沉浸模式。微信可从右上角菜单选择在浏览器中打开。','Immersive mode on; this browser does not support page fullscreen.','没入モード：このブラウザは全画面表示に未対応です。'));}
   }
  }catch{fallback=true;document.body.classList.add('immersive-fallback');toast(t('浏览器限制了全屏，已开启沉浸模式。','Browser fullscreen is restricted; immersive mode is on.','ブラウザの制限により、没入モードを開始しました。'));}
  syncFull();wake();

@@ -18,8 +18,9 @@
     // This BBOX is a provisional data-discovery envelope; NOT an official resort boundary.
     bbox: [42.085, 127.463, 42.124, 127.528], // south,west,north,east
   });
-  const elevationReady=fetch('./data/elevation.json').then(r=>r.ok?r.json():{}).then(d=>d[resort.id]||{}).catch(()=>({}));
-  const metricsReady=fetch('./data/trail-metrics.json').then(r=>r.ok?r.json():{}).then(d=>d[resort.id]||{}).catch(()=>({}));
+  const elevationReady=window.snowData('./data/elevation.json').then(d=>d[resort.id]||{}).catch(()=>({}));
+  const geometryWarm=window.snowData('./data/resorts/'+resort.id+'.geojson').catch(()=>null);
+  const metricsReady=window.snowData('./data/trail-metrics.json').then(d=>d[resort.id]||{}).catch(()=>({}));
   let trailMetrics={};
   let elevationInfo=null,sceneBearing=SETTINGS.bearing;
   const byId = (id) => document.getElementById(id);
@@ -73,7 +74,7 @@
       container: 'map', style, center: SETTINGS.center, zoom: SETTINGS.zoom,
       pitch: SETTINGS.pitch, bearing: SETTINGS.bearing,
       minZoom: resort.id === 'wanda' ? 12.9 : 9, maxZoom: 17, minPitch: resort.id === 'wanda' ? 58 : 0, maxPitch: 85,
-      antialias: false, renderWorldCopies: false,
+      attributionControl:false, antialias: false, renderWorldCopies: false,
       pixelRatio: Math.min(window.devicePixelRatio || 1, mobile() ? 1.25 : 1.6),
       maxTileCacheZoomLevels: 2,
       maxTileCacheSize: 72,
@@ -110,7 +111,7 @@
     const duration=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:1000;
     if(viewMode==='mountain'&&elevationInfo?.high&&elevationInfo?.low){
       const lo=elevationInfo.low.coordinates,hi=elevationInfo.high.coordinates;
-      const center=[lo[0]*.6+hi[0]*.4,lo[1]*.6+hi[1]*.4];
+      const center=hi.slice(0,2);
       const bearing=Math.atan2((hi[0]-lo[0])*Math.cos(lo[1]*Math.PI/180),hi[1]-lo[1])*180/Math.PI;
       map.easeTo({center,bearing,pitch:84,zoom:Math.min(16.2,overviewZoom+1.55),padding:{top:30,bottom:30,left:20,right:20},duration});
     }else if(dataBounds)map.fitBounds(dataBounds,{padding:viewPadding(),bearing:sceneBearing,pitch:SETTINGS.pitch,duration,maxZoom:14.2});
@@ -256,8 +257,8 @@
     map.addSource(vegSourceName,{type:'geojson',data:emptyGeojson(),attribution:osmAttribution+' · <a href="https://esa-worldcover.org/en/data-access">ESA WorldCover 2021 v200 (CC BY 4.0)</a>'});
     map.addLayer({id:'woodland-underlay',type:'fill',source:vegSourceName,
       paint:{'fill-color':'#819b88','fill-opacity':['interpolate',['linear'],['zoom'],9,0.12,12,0.20,15,0.28]}});
-    {map.addSource('wanda-canopies',{type:'geojson',data:resort.id==='wanda'?'./data/wanda-canopies.geojson':emptyGeojson()});
-    if(resort.id!=='wanda')fetch('./data/crowns/'+resort.id+'.json?v=atlas24').then(r=>r.json()).then(rows=>{
+    {map.addSource('wanda-canopies',{type:'geojson',data:resort.id==='wanda'?'./data/wanda-canopies.geojson?v=fast31':emptyGeojson()});
+    if(resort.id!=='wanda')window.snowData('./data/crowns/'+resort.id+'.json').then(rows=>{
       const features=rows.map(([x,y,h])=>{const ring=[];for(let i=0;i<6;i++){const a=i*Math.PI/3;ring.push([x+Math.cos(a)*h/(111200*Math.cos(y*Math.PI/180)),y+Math.sin(a)*h/111200]);}ring.push(ring[0]);return {type:'Feature',properties:{height:h},geometry:{type:'Polygon',coordinates:[ring]}};});map.getSource('wanda-canopies').setData({type:'FeatureCollection',features});
     }).catch(()=>{});
     map.addLayer({id:'wanda-low-canopy',type:'fill-extrusion',source:'wanda-canopies',minzoom:12.8,
@@ -270,9 +271,7 @@
   async function loadLandscapeData(){
     const file='./data/landcover/'+encodeURIComponent(resort.id)+'.geojson';
     try {
-      const resp=await fetch(file,{cache:'no-cache'});
-      if(!resp.ok)throw new Error('HTTP '+resp.status);
-      const data=await resp.json();
+      const data=await window.snowData(file);
       if(data.type!=='FeatureCollection'||!Array.isArray(data.features))throw new Error('Invalid GeoJSON');
       const polygons=data.features.filter(f=>f?.geometry && (f.geometry.type==='Polygon'||f.geometry.type==='MultiPolygon'));
       forestCount=polygons.length;forestLoaded=forestCount>0;
@@ -451,9 +450,7 @@
     if(window.parent!==window && document.referrer.startsWith(location.origin+'/') && window.parent.snowAtlasRoute){
       const payload=await window.parent.snowAtlasRoute(resort.id);return splitRoutes(payload);
     }
-    const rsp = await fetch('./data/resorts/' + encodeURIComponent(resort.id) + '.geojson?v=atlas24', {cache:'force-cache'});
-    if (!rsp.ok) return null;
-    return splitRoutes(await rsp.json());
+    return splitRoutes(await window.snowData('./data/resorts/'+resort.id+'.geojson'));
   }
   function splitRoutes(payload){
     if (payload.type !== 'FeatureCollection' || !Array.isArray(payload.features)) throw Error('本地GeoJSON格式错误');
@@ -477,10 +474,18 @@
   const labelsButton = byId('btn-labels');
   const labelsButtonText = byId('label-toggle-text');
   function updateNameVisibility() {
+    const boxes=[],compact=mobile()||innerWidth<=1024;
     for (const item of nameMarkers) {
-      const v=window.snowAtlasRunFilter||'all';const visible=item.kind!=='piste'||v==='all'||(v==='easy'?['novice','easy']:v==='advanced'?['advanced','expert','freeride']:[v]).includes(item.difficulty);item.marker.getElement().style.display = allNamesVisible&&visible ? '' : 'none';
+      const el=item.marker.getElement(),v=window.snowAtlasRunFilter||'all';
+      const visible=item.kind!=='piste'||v==='all'||(v==='easy'?['novice','easy']:v==='advanced'?['advanced','expert','freeride']:[v]).includes(item.difficulty);
+      el.style.display=allNamesVisible&&visible?'':'none';
+      if(!allNamesVisible||!visible||!compact)continue;
+      const p=map.project(item.at),w=el.offsetWidth,h=el.offsetHeight,box={x:p.x-w/2,y:p.y-h/2,w,h};
+      if(box.x+w<0||box.y+h<0||box.x>innerWidth||box.y>innerHeight||boxes.some(b=>!(box.x+box.w+4<b.x||b.x+b.w+4<box.x||box.y+box.h+4<b.y||b.y+b.h+4<box.y))){el.style.display='none';continue;}
+      boxes.push(box);
     }
   }
+  map.on('moveend',updateNameVisibility);map.on('resize',updateNameVisibility);
   labelsButton.addEventListener('click', () => {
     allNamesVisible = !allNamesVisible;
     if(allNamesVisible && labelData && !nameMarkers.length) installNameMarkers(labelData);
@@ -526,7 +531,7 @@
         el.title = (kind === 'lift' ? '索道' : '雪道') + ' · OSM数据，尚未核对官方名称和线位';
         const marker = new maplibregl.Marker({element:el,anchor:'center',offset:[0,0]})
           .setLngLat(at).addTo(map);
-        nameMarkers.push({marker,kind,difficulty:p.difficulty,unnamed:!name});
+        nameMarkers.push({marker,kind,at,difficulty:p.difficulty,unnamed:!name});
       }
     }
     updateNameVisibility();
@@ -584,6 +589,7 @@
     labelData=data; // HTML labels are created lazily only when explicitly requested.
     if(allNamesVisible&&!nameMarkers.length)installNameMarkers(data);
     dataBounds=computeBounds(data);
+    performance.mark('snowatlas-routes-visible');document.documentElement.dataset.routesReadyMs=String(Math.round(performance.now()));
     if(dataBounds){
       const latSpan=dataBounds[1][1]-dataBounds[0][1];
       const lonSpan=dataBounds[1][0]-dataBounds[0][0];
@@ -614,13 +620,13 @@
     if (ev.sourceId === 'dem' && ev.isSourceLoaded) terrainReady = true;
   });
   map.on('error', ({error}) => console.warn('[Snow Atlas] Map tile/source warning:', error?.message || error));
-  map.on('load', () => {
+  map.once('style.load', () => {
     mapLoaded = true;
     installLandscapeLayers();
     installLayers();
     installNearby();
     {
-      fetch('./data/context/'+encodeURIComponent(resort.id)+'.geojson').then(r=>{if(!r.ok)throw Error(r.status);return r.json();}).then(data=>{
+      window.snowData('./data/context/'+encodeURIComponent(resort.id)+'.geojson').then(data=>{
         map.addSource('resort-context',{type:'geojson',data,attribution:'© OpenStreetMap contributors (ODbL)'});
         const roadFilter=['all',['==',['get','kind'],'road'],['!',['in',['get','highway'],['literal',['proposed','construction']]]]];
         map.addLayer({id:'local-road-edge',type:'line',source:'resort-context',filter:roadFilter,paint:{'line-color':'#a4afa9','line-width':['interpolate',['linear'],['zoom'],12,1.5,16,7],'line-opacity':0.65}},'piste-snow-lane');
@@ -644,6 +650,7 @@
   }, 16000);
   window.__snowAtlasMap = map; // for local debugging in Edge DevTools
 })();
+
 
 
 

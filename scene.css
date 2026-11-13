@@ -42,3 +42,8 @@
 .immersive-fallback .masthead,.immersive-fallback #language-select,.immersive-fallback .nearby-resorts{display:none!important}
 .rotate-note{border-top:1px solid #dce5df;padding-top:12px;color:#8b693c!important}
 @media(prefers-reduced-motion:reduce){.scene-dock{transition:none}}
+
+.geo-label-piste{color:#102c3a;background:#fffffff2;border:1px solid #9baeb6;padding:5px 7px;border-radius:6px;font-size:13px;font-weight:750;line-height:1.25;text-shadow:none;box-shadow:0 1px 4px #102c3a20}
+.geo-label-lift{color:#603713;background:#fff9e9f5;border:1px solid #c5aa86;font-size:12px;padding:4px 6px;text-shadow:none}
+@media(max-width:1024px){.geo-label-piste{font-size:14px;font-weight:750}.geo-label-lift{font-size:12px}}
+.data-attribution{font-size:10px;line-height:1.7;color:#72868e;margin-top:14px}.data-attribution a{color:inherit}
