@@ -1,6 +1,6 @@
-const CACHE='snow-atlas-fast31';
+const CACHE='snow-atlas-japan34';
 self.addEventListener('install',()=>self.skipWaiting());
-self.addEventListener('activate',event=>event.waitUntil((async()=>{for(const key of await caches.keys())if(key.startsWith('snow-atlas-fast')&&key!==CACHE)await caches.delete(key);await self.clients.claim();})()));
+self.addEventListener('activate',event=>event.waitUntil((async()=>{for(const key of await caches.keys())if(key.startsWith('snow-atlas-')&&key!==CACHE)await caches.delete(key);await self.clients.claim();})()));
 let writes=0;
 self.addEventListener('fetch',event=>{
  const request=event.request,u=new URL(request.url);

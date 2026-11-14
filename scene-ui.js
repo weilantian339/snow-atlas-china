@@ -11,7 +11,7 @@
     names:svg('<path d="M3 18 8 5l5 13M5 13h6m4-3h6m-3-3v11m-3 0h6"/>'),
     options:svg('<path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="2" fill="currentColor" stroke="none"/><circle cx="16" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="10" cy="18" r="2" fill="currentColor" stroke="none"/>')
   };
-  const home=document.createElement('a');home.className='scene-home';home.href='./index.html?lang='+encodeURIComponent(lang);home.setAttribute('aria-label',text('返回中国地图','Back to China map','中国地図へ戻る'));home.innerHTML=svg('<path d="m14 6-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>');document.body.append(home);
+  const home=document.createElement('a');home.className='scene-home';home.href='./index.html?lang='+encodeURIComponent(lang);home.setAttribute('aria-label',text('返回地图','Back to map','地図へ戻る'));home.innerHTML=svg('<path d="m14 6-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>');document.body.append(home);
   const dock=document.createElement('div');dock.className='scene-dock';dock.id='scene-dock';dock.setAttribute('aria-label',text('地图工具','Map tools','地図ツール'));
   const tools=document.querySelector('.tools');dock.append(tools);document.body.append(dock);
   const sheet=document.createElement('dialog');sheet.id='scene-options';sheet.className='scene-sheet';sheet.setAttribute('aria-labelledby','scene-options-title');
@@ -62,6 +62,8 @@
   dismiss.onclick=()=>guide.close();guide.addEventListener('close',acknowledgeGuide);
   guide.append(guideTitle,guideBody,dismiss);document.body.append(guide);
   const help=document.createElement('button');help.className='guide-reopen';help.textContent=text('操作说明','Quick guide','操作ガイド');help.onclick=()=>{sheet.close();guide.showModal();};sheet.append(help);
+  const entry=(window.SNOW_ATLAS_RESORTS||[]).find(r=>r.id===new URLSearchParams(location.search).get('id'));
+  if(entry?.country==='JP'&&entry.officialUrl){const a=document.createElement('a');a.className='guide-reopen';a.href=entry.officialUrl;a.target='_blank';a.rel='noopener';a.textContent=text('官网 · 查看最新雪道图与营业信息','Official site · trail map & operations','公式サイト・コースマップと営業情報');sheet.append(a);}
   const credits=document.createElement('p');credits.className='data-attribution';credits.innerHTML='© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors (ODbL)</a> · AWS Terrain · ESA WorldCover 2021 · MapLibre';sheet.append(credits);
   let guideScheduled=false;
   const mount=()=>{const extras=document.querySelector('.scene-extras');if(extras&&extras.parentElement!==dock)dock.append(extras);

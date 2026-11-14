@@ -50,3 +50,5 @@
 .maplibregl-ctrl-attrib.maplibregl-compact-show{margin-bottom:60px}
 
 .catalog-foot{display:block;font-size:9px;color:#7c8b8c;padding:10px 18px;border-top:1px solid #dce4de}
+
+#country-select{position:absolute;z-index:12;left:24px;top:calc(84px + env(safe-area-inset-top));background:#163343;color:#f0eadf;border:1px solid #b99b6755;border-radius:12px;padding:9px 30px 9px 12px;font:600 14px system-ui;max-width:190px}@media(max-width:600px){#country-select{left:16px;top:calc(74px + env(safe-area-inset-top));font-size:13px;padding:8px 24px 8px 10px}}

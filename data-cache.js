@@ -1,5 +1,5 @@
 (() => {
-const VERSION='fast31',pending=new Map();
+const VERSION='japan34',pending=new Map();
 function canonical(path){const u=new URL(path,location.href);u.searchParams.set('v',VERSION);return u.href;}
 window.snowData=function(path,options={}){
  try{if(parent!==window&&parent.location.origin===location.origin&&parent.snowData)return parent.snowData(path,options);}catch{}

@@ -1,5 +1,5 @@
 (() => {
-const resorts=window.SNOW_ATLAS_RESORTS||[];
+const resorts=(window.SNOW_ATLAS_RESORTS||[]).slice().sort((a,b)=>Number((b.country||'CN')===(localStorage.getItem('snow-country')||'CN'))-Number((a.country||'CN')===(localStorage.getItem('snow-country')||'CN')));
 const AWS='https://s3.amazonaws.com/elevation-tiles-prod/terrarium/';
 const seen=new Set(),queue=[];let bytes=0,complete=0;
 const slow=()=>navigator.connection?.saveData||/(^|-)2g/.test(navigator.connection?.effectiveType||'');
@@ -29,6 +29,7 @@ async function start(){
    }catch{}finally{active--;setTimeout(launch,inScene?500:80);}})();
   }
  }
+ window.addEventListener('snow-country-change',()=>{const ids=resorts.filter(r=>r.country===localStorage.getItem('snow-country')).map(r=>r.id);queue.sort((a,b)=>Number(ids.some(id=>b.url.includes('/'+id+'.')))-Number(ids.some(id=>a.url.includes('/'+id+'.'))));launch();});
  document.addEventListener('visibilitychange',launch);launch();
 }
 if(document.readyState==='complete')setTimeout(start,1200);else window.addEventListener('load',()=>setTimeout(start,1200),{once:true});

@@ -7,7 +7,8 @@
   if(entries.length && !entries.some(r=>r.id===requestedId)){location.replace('./index.html');return;}
   const resort = entries.find(r => r.id === requestedId) || entries.find(r => r.id === 'wanda') || {id:'wanda',name:'长白山万达',region:'吉林',center:[127.4938,42.103]};
   document.querySelector('.masthead h1').textContent = resort.name;
-  document.querySelector('.subline').textContent = resort.region + ' · CHINA';
+  localStorage.setItem('snow-country',resort.country||'CN');
+  document.querySelector('.subline').textContent = resort.region + (resort.country==='JP'?' · JAPAN':' · CHINA');
   document.title = resort.name + ' · 3D Snow Atlas';
   document.getElementById('map').setAttribute('aria-label',resort.name+'滑雪场三维地形地图');
   document.getElementById('scene-preview').textContent = '真实DEM地形 · 线路来源OSM社区数据，尚未逐条核验';
@@ -22,7 +23,7 @@
   const geometryWarm=window.snowData('./data/resorts/'+resort.id+'.geojson').catch(()=>null);
   const metricsReady=window.snowData('./data/trail-metrics.json').then(d=>d[resort.id]||{}).catch(()=>({}));
   let trailMetrics={};
-  let elevationInfo=null,sceneBearing=SETTINGS.bearing;
+  let elevationInfo=null,areaOnly=false,sceneBearing=SETTINGS.bearing;
   const byId = (id) => document.getElementById(id);
   const emptyGeojson = () => ({type: 'FeatureCollection', features: []});
   const statusEl = byId('status-text'), dotEl = byId('status-dot'), countEl = byId('feature-count');
@@ -114,7 +115,7 @@
       const center=hi.slice(0,2);
       const bearing=Math.atan2((hi[0]-lo[0])*Math.cos(lo[1]*Math.PI/180),hi[1]-lo[1])*180/Math.PI;
       map.easeTo({center,bearing,pitch:84,zoom:Math.min(16.2,overviewZoom+1.55),padding:{top:30,bottom:30,left:20,right:20},duration});
-    }else if(dataBounds)map.fitBounds(dataBounds,{padding:viewPadding(),bearing:sceneBearing,pitch:SETTINGS.pitch,duration,maxZoom:14.2});
+    }else if(dataBounds)map.fitBounds(dataBounds,{padding:viewPadding(),bearing:sceneBearing,pitch:areaOnly?0:SETTINGS.pitch,duration,maxZoom:areaOnly?15:14.2});
     else map.easeTo({center:SETTINGS.center,zoom:SETTINGS.zoom,pitch:viewMode==='mountain'?82:SETTINGS.pitch,bearing:sceneBearing,duration});
     configureOrbit();
     viewButton.setAttribute('aria-pressed',String(viewMode==='mountain'));
@@ -257,7 +258,7 @@
     map.addSource(vegSourceName,{type:'geojson',data:emptyGeojson(),attribution:osmAttribution+' · <a href="https://esa-worldcover.org/en/data-access">ESA WorldCover 2021 v200 (CC BY 4.0)</a>'});
     map.addLayer({id:'woodland-underlay',type:'fill',source:vegSourceName,
       paint:{'fill-color':'#819b88','fill-opacity':['interpolate',['linear'],['zoom'],9,0.12,12,0.20,15,0.28]}});
-    {map.addSource('wanda-canopies',{type:'geojson',data:resort.id==='wanda'?'./data/wanda-canopies.geojson?v=fast31':emptyGeojson()});
+    {map.addSource('wanda-canopies',{type:'geojson',data:resort.id==='wanda'?'./data/wanda-canopies.geojson?v=japan34':emptyGeojson()});
     if(resort.id!=='wanda')window.snowData('./data/crowns/'+resort.id+'.json').then(rows=>{
       const features=rows.map(([x,y,h])=>{const ring=[];for(let i=0;i<6;i++){const a=i*Math.PI/3;ring.push([x+Math.cos(a)*h/(111200*Math.cos(y*Math.PI/180)),y+Math.sin(a)*h/111200]);}ring.push(ring[0]);return {type:'Feature',properties:{height:h},geometry:{type:'Polygon',coordinates:[ring]}};});map.getSource('wanda-canopies').setData({type:'FeatureCollection',features});
     }).catch(()=>{});
@@ -460,7 +461,7 @@
       if (feature.properties?.kind === 'lift') lifts.features.push(feature);
       if (feature.properties?.kind === 'piste') pistes.features.push(feature);
     }
-    return {pistes,lifts};
+    return {pistes,lifts,areas:{type:'FeatureCollection',features:payload.features.filter(f=>f.properties?.kind==='resort-area')}};
   }
 
   // Lightweight HTML markers display CJK labels without additional font downloads.
@@ -486,6 +487,16 @@
     }
   }
   map.on('moveend',updateNameVisibility);map.on('resize',updateNameVisibility);
+  let wasLandscape=innerWidth>innerHeight,resizeTimer;
+  map.on('resize',()=>{
+    const next=innerWidth>innerHeight;if(next===wasLandscape)return;wasLandscape=next;
+    clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{
+      if(!dataBounds)return;
+      const camera=map.cameraForBounds(dataBounds,{padding:viewPadding(),bearing:sceneBearing,maxZoom:14.2});
+      if(camera){overviewZoom=Math.max(resort.id==='wanda'?12.9:resort.country==='JP'?9:12,camera.zoom);map.setMinZoom(overviewZoom);}
+      reset();
+    },160);
+  });
   labelsButton.addEventListener('click', () => {
     allNamesVisible = !allNamesVisible;
     if(allNamesVisible && labelData && !nameMarkers.length) installNameMarkers(labelData);
@@ -552,6 +563,7 @@
 
   function computeBounds(data){
     const coords=[...data.pistes.features,...data.lifts.features].flatMap(f=>f.geometry?.coordinates||[]);
+    if(!data.pistes.features.length)for(const f of data.areas?.features||[]){const walk=a=>{if(typeof a[0]==='number')coords.push(a);else a.forEach(walk);};walk(f.geometry.coordinates);}
     const valid=coords.filter(p=>Array.isArray(p)&&Number.isFinite(p[0])&&Number.isFinite(p[1]));
     if(valid.length<2)return null;
     let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
@@ -569,13 +581,18 @@
       byId('label-toggle-text').textContent='线路待下载';
       return;
     }
-    const n=data.pistes.features.length,m=data.lifts.features.length;
+    const n=data.pistes.features.length,m=data.lifts.features.length;areaOnly=!n;
     if(n+m===0){
       setStatus('该区域当前未查得公开OSM线路，雪道及索道需进一步实地/官方核查', 'warn');
       countEl.textContent='已检索 · 0条可显示线路';
       byId('btn-labels').disabled=true;
       byId('label-toggle-text').textContent='暂无名称';
       return;
+    }
+    if(!n&&data.areas?.features.length){
+      map.addSource('resort-area',{type:'geojson',data:data.areas});
+      map.addLayer({id:'mapped-resort-area',type:'fill',source:'resort-area',paint:{'fill-color':'#c6a975','fill-opacity':.18}});
+      map.addLayer({id:'mapped-resort-outline',type:'line',source:'resort-area',paint:{'line-color':'#927a52','line-width':2}});
     }
     map.getSource('pistes').setData(data.pistes);
     map.getSource('lifts').setData(data.lifts);
@@ -593,11 +610,11 @@
     if(dataBounds){
       const latSpan=dataBounds[1][1]-dataBounds[0][1];
       const lonSpan=dataBounds[1][0]-dataBounds[0][0];
-      if(latSpan>0.001&&lonSpan>0.001){
-        const camera=map.cameraForBounds(dataBounds,{padding:viewPadding(),bearing:sceneBearing,maxZoom:14.2});
+      if(latSpan>0.00005&&lonSpan>0.00005){
+        const camera=map.cameraForBounds(dataBounds,{padding:viewPadding(),bearing:sceneBearing,maxZoom:n?14.2:15});
         if(camera) {
           // The complete-resort overview is the furthest permitted view.
-          overviewZoom=Math.max(resort.id==='wanda'?12.9:12,camera.zoom);
+          overviewZoom=Math.max(resort.id==='wanda'?12.9:resort.country==='JP'?9:12,camera.zoom);
           map.setMinZoom(overviewZoom);
         }
         const cameraValues=(new URLSearchParams(location.search).get('camera')||'').split(',').map(Number);
@@ -610,7 +627,7 @@
     window.snowAtlasSceneFeatures(map,resort,()=>viewMode);
     const namedCount=[...data.pistes.features,...data.lifts.features].filter(f=>String(f.properties?.name_zh||f.properties?.name||f.properties?.ref||'').trim()).length;
     countEl.textContent=`雪道 ${n} · 索道 ${m} · 有名称 ${namedCount}/${n+m}`;
-    setStatus('已加载公开OSM线路 · 地理位置及名称尚未官方核验','ok');
+    setStatus(n?'已加载公开OSM线路 · 地理位置及名称尚未官方核验':'场地范围与索道 · 雪道待核对',n?'ok':'warn');
     byId('scene-preview').textContent=`真实DEM地形 · OSM候选线路${n+m}条（待核验）`;
   }
 

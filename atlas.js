@@ -1,16 +1,19 @@
 (() => {
 'use strict';
-const resorts = (window.SNOW_ATLAS_RESORTS || []).slice().sort((a,b) => b.mappedPisteKm-a.mappedPisteKm || a.rank-b.rank);
+const allResorts = (window.SNOW_ATLAS_RESORTS || []).slice().sort((a,b) => b.mappedPisteKm-a.mappedPisteKm || a.rank-b.rank);
 const $ = (id) => document.getElementById(id);
 const t=s=>window.SnowI18n?.t(s)||s;
 const displayName=r=>window.SnowI18n?.name(r.id)||r.name;
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const overviewBounds = [[73, 17], [136, 54]];
+let country=localStorage.getItem('snow-country')==='JP'?'JP':'CN';
+let resorts=allResorts.filter(r=>(r.country||'CN')===country);
+let overviewBounds=country==='JP'?[[138.68,36.77],[139.04,37.19]]:[[73,17],[136,54]];
 if (!window.maplibregl || !resorts.length) { $('atlas-message').textContent = '地图库或雪场列表未加载，请检查网络和本地文件。'; return; }
 // 110m Natural Earth boundaries are design-context only, not approved national surveying data.
 const style = {
  version:8, name:'China · Resort Atlas',
  sources:{
+  'japan-roads':{type:'geojson',data:'./data/japan-roads.geojson'},
   'south-sea':{type:'geojson',data:'./data/south-sea.geojson'},'provinces':{type:'geojson',data:'./data/provinces.geojson',attribution:'Province outlines: DataV GeoAtlas'},
   'world':{type:'geojson',data:'./data/world.geojson', attribution:'Natural Earth, public domain (simplified overview)'},
   'china':{type:'geojson',data:'./data/china.geojson', attribution:'Natural Earth (overview outline, not authoritative)'}
@@ -19,12 +22,14 @@ const style = {
   {id:'base',type:'background',paint:{'background-color':'#071b2a'}},
   {id:'land',type:'fill',source:'world',paint:{'fill-color':'#244458','fill-opacity':.65}},
   
+  {id:'japan-land',type:'fill',source:'world',filter:['==',['get','name'],'Japan'],paint:{'fill-color':'#d8e7e8','fill-opacity':.98}},
   {id:'mainland',type:'fill',source:'china',paint:{'fill-color':'#d8e7e8','fill-opacity':.98}},
+  {id:'japan-roads',type:'line',source:'japan-roads',minzoom:8,paint:{'line-color':'#94a5a8','line-width':1,'line-opacity':.38}},
   {id:'province-lines',type:'line',source:'provinces',paint:{'line-color':'#7e9da6','line-opacity':0.24,'line-width':0.65}},
   {id:'south-sea-lines',type:'line',source:'south-sea',paint:{'line-color':'#d8e7e8','line-width':1.8}},{id:'outline',type:'line',source:'china',paint:{'line-color':'#eaf7f8','line-width':1.1,'line-opacity':.95}}
  ]
 };
-const map = new maplibregl.Map({container:'atlas-map',style,center:[104,37],zoom:3.05,minZoom:1.6,maxZoom:13,renderWorldCopies:false,dragRotate:false,pitchWithRotate:false,scrollZoom:true,maxPitch:0,attributionControl:false,antialias:false,pixelRatio:Math.min(devicePixelRatio||1,1.8)});
+const map = new maplibregl.Map({container:'atlas-map',style,center:country==='JP'?[138.84,36.98]:[104,37],zoom:country==='JP'?9:3.05,minZoom:1.6,maxZoom:13,renderWorldCopies:false,dragRotate:false,pitchWithRotate:false,scrollZoom:true,maxPitch:0,attributionControl:false,antialias:false,pixelRatio:Math.min(devicePixelRatio||1,1.8)});
 let lastResort=null;
 let isOpen=false;
 const anchors=new Map();
@@ -33,7 +38,7 @@ labelLayer.className='resort-label-layer';
 $('atlas-map').appendChild(labelLayer);
 const leaderSvg=document.createElementNS('http://www.w3.org/2000/svg','svg');leaderSvg.classList.add('resort-elbow');labelLayer.append(leaderSvg);
 let framePending=false;
-function fitChina(){const small=innerWidth<=600;map.fitBounds(overviewBounds,{padding:{top:small?88:95,right:small?20:45,bottom:small?105:75,left:small?20:45},duration:reduced?0:650,maxZoom:4.05});}
+function fitChina(){const small=innerWidth<=600;map.fitBounds(overviewBounds,{padding:{top:small?88:95,right:small?20:45,bottom:small?105:75,left:small?20:45},duration:reduced?0:650,maxZoom:country==='JP'?10:4.05});}
 function overlaps(a,b,pad=5){return !(a.x+a.w+pad<b.x||b.x+b.w+pad<a.x||a.y+a.h+pad<b.y||b.y+b.h+pad<a.y);}
 const labelNodes=new Map();
 const mobileGroups=new Map();
@@ -44,7 +49,7 @@ const groups=[
  {id:'shaanxi',name:'陕西',center:[107.6,34],items:resorts.filter(r=>r.region.startsWith('陕西'))}
 ];
 function renderMobileGroups(){
- const grouped=innerWidth<=600&&map.getZoom()<4.5;
+ const grouped=country==='CN'&&innerWidth<=600&&map.getZoom()<4.5;
  for(const g of groups){if(!g.items.length)continue;
   let b=mobileGroups.get(g.id);
   if(!b){b=document.createElement('button');b.className='region-cluster';b.textContent=t(g.name)+' · '+g.items.length;b.setAttribute('aria-label',t('查看地区')+' '+t(g.name)+' '+g.items.length);b.onclick=()=>{
@@ -74,7 +79,7 @@ function layoutLabels(){
  const active=new Set(visible.map(o=>o.r.id));for(const [id,n] of labelNodes){for(const el of [n.label,n.point])el.style.display=active.has(id)?'':'none';n.path.style.display=active.has(id)?'':'none';}
  if(needsLayout){
   const placed=[];
-  const minY=innerWidth<=600?82:90,maxY=h-(innerWidth<=600?92:80);
+  const minY=innerWidth<=600?130:125,maxY=h-(innerWidth<=600?92:80);
   // Stable geographic order, previous offsets preferred; exhaustive grid avoids overlap.
   for(const {r,p} of visible.sort((a,b)=>b.r.center[1]-a.r.center[1]||a.r.center[0]-b.r.center[0])){
    const n=labelNodes.get(r.id),bw=n.label.offsetWidth,bh=n.label.offsetHeight;
@@ -136,6 +141,8 @@ $('resort-search').addEventListener('input',e=>{const q=e.target.value.trim().to
 $('btn-list').addEventListener('click',()=>toggleList());
 $('btn-close-list').addEventListener('click',()=>toggleList(false));
 window.addEventListener('keydown',e=>{if(e.key==='Escape'){if(isOpen){if(history.state?.snowAtlasResort)history.back();else closeResort();}else toggleList(false);}if(e.key.toLowerCase()==='h'&&!isOpen&&!(e.target instanceof HTMLInputElement))fitChina();});
+function renderCatalog(){
+ $('resort-list').replaceChildren();
 for(const r of resorts){
  const row=document.createElement('button');row.type='button';row.className='catalog-row';
  const index=document.createElement('span');index.className='rank-no';index.textContent=String(r.rank).padStart(2,'0');
@@ -145,10 +152,12 @@ for(const r of resorts){
  main.append(name,region);
  const km=document.createElement('span');km.className='row-km';km.textContent=r.mappedPisteKm+' km';km.dataset.resort=r.id;
  row.append(index,main,km);
- row.title=t('进入雪场')+' '+displayName(r);row.dataset.search=(r.name+' '+displayName(r)+' '+r.region+' '+r.id).toLocaleLowerCase();
+ row.title=t('进入雪场')+' '+displayName(r);row.dataset.search=(r.name+' '+(r.name_ja||'')+' '+(r.name_en||'')+' '+displayName(r)+' '+r.region+' '+r.id).toLocaleLowerCase();
  row.addEventListener('click',()=>{toggleList(false);openResort(r);});
  $('resort-list').append(row);
 }
+}
+renderCatalog();
 // Read-only coverage badge in catalogue. Never pass unverified candidates off as certified resort data.
 fetch('./data/coverage.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(c=>{
   if(!c)return;
@@ -162,7 +171,7 @@ fetch('./data/coverage.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).the
 }).catch(e=>console.info('[Snow Atlas] Coverage not available:',e.message));
 const routeCache=new Map();
 window.snowAtlasRoute=function(id){
- if(!resorts.some(r=>r.id===id))return Promise.reject(Error('Unknown resort'));
+ if(!allResorts.some(r=>r.id===id))return Promise.reject(Error('Unknown resort'));
  if(!routeCache.has(id))routeCache.set(id,window.snowData('./data/resorts/'+id+'.geojson').catch(e=>{routeCache.delete(id);throw e;}));
  return routeCache.get(id);
 };
@@ -182,7 +191,7 @@ function warm(){
  })();}
 }
 document.addEventListener('visibilitychange',warm);
-map.on('load',()=>{fitChina();renderPins();setTimeout(warm,500);
+map.on('load',()=>{applyCountry();fitChina();renderPins();setTimeout(warm,500);
  const attribution=document.querySelector('.maplibregl-ctrl-attrib');if(attribution){attribution.removeAttribute('open');attribution.classList.remove('maplibregl-compact-show');}
 });
 map.on('move',renderPins);
@@ -191,5 +200,24 @@ map.on('moveend',renderPins);
 map.on('resize',()=>{needsLayout=true;renderPins();});
 document.fonts?.ready.then(()=>{needsLayout=true;renderPins();});
 map.on('error',e=>{console.warn('[Snow Atlas] Overview map warning:',e.error?.message||e);});
+const select=$('country-select');select.value=country;
+function applyCountry(){
+ for(const id of ['mainland','province-lines','south-sea-lines','outline'])if(map.getLayer(id))map.setLayoutProperty(id,'visibility',country==='CN'?'visible':'none');
+ if(map.getLayer('japan-roads'))map.setLayoutProperty('japan-roads','visibility',country==='JP'?'visible':'none');
+ $('btn-home').querySelector('span').textContent=country==='JP'?t('区域全览'):t('全国视角');
+ $('btn-back').setAttribute('aria-label',t('返回地图'));$('btn-home').setAttribute('aria-label',t(country==='JP'?'区域全览':'全国视角'));$('btn-home').title=t(country==='JP'?'区域全览':'全国视角');
+ if(map.getLayer('japan-land'))map.setLayoutProperty('japan-land','visibility',country==='JP'?'visible':'none');
+ document.querySelector('.mini-count').textContent=resorts.length;
+ document.querySelector('.catalog-eyebrow').textContent='THE RESORTS / '+resorts.length;
+}
+select.addEventListener('change',()=>{
+ country=select.value;localStorage.setItem('snow-country',country);
+ resorts=allResorts.filter(r=>(r.country||'CN')===country);
+ overviewBounds=country==='JP'?[[138.68,36.77],[139.04,37.19]]:[[73,17],[136,54]];
+ for(const n of labelNodes.values())for(const e of [n.label,n.point,n.path])e.remove();
+ labelNodes.clear();anchors.clear();needsLayout=true;
+ $('resort-search').value='';$('catalog-empty').hidden=true;
+ renderCatalog();applyCountry();window.dispatchEvent(new Event('snow-country-change'));pending=[...resorts];done=0;failed=0;fitChina();renderPins();warm();
+});
 window.__snowAtlasOverview=map;
 })();

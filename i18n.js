@@ -1,12 +1,12 @@
 (()=>{
 const lang=new URLSearchParams(location.search).get('lang')||localStorage.getItem('snow-language')||'zh';
 document.documentElement.lang=lang;localStorage.setItem('snow-language',lang);
-const dict={
+const dict={'新潟 · 汤泽町':['Niigata · Yuzawa','新潟・湯沢町'],'新潟 · 南鱼沼市':['Niigata · Minamiuonuma','新潟・南魚沼市'],'区域全览':['Area overview','エリア全景'],'返回地图':['Back to map','地図に戻る'],'中国':['China','中国'],'日本 · 越后':['Japan · Echigo','日本・越後'],'国家与地区':['Country / region','国・地域'],
 '中国滑雪地图':['China Ski Atlas','中国スキーマップ'],'雪场名单':['Resorts','スキー場一覧'],'全国视角':['China','全国表示'],'返回中国地图':['Back to China','中国地図に戻る'],'附近雪场':['Nearby resorts','周辺のスキー場'],
 '山前 · 切全览':['Mountain · Overview','山麓 · 全景へ'],'全览 · 切山前':['Overview · Mountain','全景 · 山麓へ'],'植被：开':['Trees: on','樹木：表示'],'植被：关':['Trees: off','樹木：非表示'],'名称 / 海拔':['Names / elevation','名称 / 標高'],'隐藏名称 / 海拔':['Hide names / elevation','名称 / 標高を隠す'],'复位视角':['Reset view','視点を戻す'],'正北':['North','北向き'],'初级':['Easy','初級'],'中级':['Intermediate','中級'],'高级':['Advanced','上級'],'索道 / 魔毯':['Lifts / carpets','リフト / ベルト'],'未分级':['Unrated','未分類'],'雪道':['Run','コース'],'长度':['Length','距離'],'最大坡度':['Max gradient','最大斜度'],'社区坐标 · 待官方核对':['Community data · unverified','コミュニティ情報・未検証'],'20 km 内附近雪场 · 直线距离':['Resorts within 20 km · straight-line','20 km以内のスキー場・直線距離'],'虚线为位置示意，非雪场边界；不表示雪道互通':['Approximate location; routes may not connect','位置の目安です。コースの接続を示しません'],'拖动绕雪场中心旋转 · 滚轮缩放 · 俯仰与平移已锁定':['Drag to orbit · Pinch to zoom','ドラッグで回転・ピンチで拡大縮小'],'已加载公开OSM线路 · 地理位置及名称尚未官方核验':['OSM routes loaded · names and locations unverified','OSMコース読込済み・名称と位置は未検証'],'雪场线路预载':['Preloading routes','コースを先読み'],'林冠位置示意':['Illustrative trees','樹木位置のイメージ'],'林区':['Woodland','森林'],'有名称':['Named','名称あり'],'索道':['Lift','リフト'],'真实DEM地形':['Elevation terrain','標高地形'],'OSM候选线路':['OSM routes','OSMコース'],'待核验':['Unverified','未検証'],'米':['m','m']};
 const names=['Jikepulin','Beidahu','Songhua Lake','Xueruyi','Wanlong','Koktokay','Yunding','Wanfeng Tonghua','Jiangjunshan','Fulong','Jinshanling','Aoshan','Thaiwoo','Changbaishan Wanda','Yabuli','Silk Road','Beijing Nanshan','Huaibei International','Cuiyunshan Galaxy','Yuyang International','Miaoxiangshan','Jundushan','National Alpine Skiing Centre','Shijinglong'];
 const ids=['jikepulin','beidahu','songhuahu','xueruyi','wanlong','koktokay','yunding','wanfeng','jiangjunshan','fulong','jinshanling','aoshan','thaiwoo','wanda','yabuli','silkroad','nanshan','huaibei','galaxy','yuyang','miaoxiangshan','jundushan','alpine','shijinglong'];
-for(const r of window.SNOW_ATLAS_RESORTS||[]){const i=ids.indexOf(r.id);if(i>=0)dict[r.name]=[names[i],r.name];}
+for(const r of window.SNOW_ATLAS_RESORTS||[]){const i=ids.indexOf(r.id);if(i>=0)dict[r.name]=[names[i],r.name];else if(r.country==='JP')dict[r.name]=[r.name_en,r.name_ja];}
 Object.assign(dict,{'新疆':['Xinjiang','新疆'],'东北':['Northeast','東北'],'京冀':['Beijing / Hebei','北京・河北'],'陕西':['Shaanxi','陝西'],'查看地区':['Explore region','エリアを見る'],
  '进入雪场':['Open resort','スキー場を開く'],'搜索雪场':['Search resorts','スキー場を検索'],'没有匹配的雪场':['No matching resorts','該当するスキー場はありません'],
  '地图设置':['Map settings','地図設定'],'图例与数据':['Legend & data','凡例とデータ'],'地图选项':['Map options','地図オプション'],
@@ -15,7 +15,9 @@ Object.assign(dict,{'新疆':['Xinjiang','新疆'],'东北':['Northeast','東北
  '分享视角':['Share view','視点を共有'],'按OSM已测绘雪道长度，非官方排名':['Mapped length · community data','OSMコース延長・参考情報']
 });
 const namesById={};
-for(const r of window.SNOW_ATLAS_RESORTS||[])namesById[r.id]=lang==='zh'?r.name:dict[r.name]?.[lang==='ja'?1:0]||r.name;
+for(const r of window.SNOW_ATLAS_RESORTS||[])namesById[r.id]=lang==='zh'?r.name:(lang==='ja'?r.name_ja:r.name_en)||dict[r.name]?.[lang==='ja'?1:0]||r.name;
+// Protect translated phrases from being translated again by the DOM observer.
+for(const pair of Object.values(dict))for(const target of pair)if(target&&!dict[target])dict[target]=[target,target];
 const keys=Object.keys(dict).sort((a,b)=>b.length-a.length);
 const escaped=keys.map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'));
 const pattern=new RegExp(escaped.join('|'),'g');

@@ -1,1 +1,765 @@
-{"jikepulin":{"low":{"coordinates":[87.5335188,48.5853971],"meters":1381},"high":{"coordinates":[87.5540669,48.6295045],"meters":2757},"bearing":10,"sampleCount":1241,"notice":"Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."},"koktokay":{"low":{"coordinates":[90.0035886,47.1885452],"meters":1671},"high":{"coordinates":[90.0901024,47.1669622],"meters":3071},"bearing":99,"sampleCount":342,"notice":"Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."},"beidahu":{"low":{"coordinates":[126.6065953,43.4213628],"meters":502},"high":{"coordinates":[126.6546794,43.4114331],"meters":1393},"bearing":121,"sampleCount":877,"notice":"Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."},"songhuahu":{"low":{"coordinates":[126.6137595,43.6854454],"meters":315},"high":{"coordinates":[126.6201156,43.6604865],"meters":907},"bearing":163,"sampleCount":644,"notice":"Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."},"xueruyi":{"low":{"coordinates":[115.4712087,40.9165126],"meters":1668},"high":{"coordinates":[115.4894824,40.9314423],"meters":2128},"bearing":41,"sampleCount":354,"notice":"Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."},"wanlong":{"low":{"coordinates":[115.3719283,40.9666965],"meters":1534},"high":{"coordinates":[115.3971861,40.9542702],"meters":2103},"bearing":135,"sampleCount":422,"notice":"Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."},"jiangjunshan":{"low":{"coordinates":[88.1423094,47.8104654],"meters":847},"high":{"coordinates":[88.1679387,47.8283762],"meters":1313},"bearing":50,"sampleCount":324,"notice":"Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."},"yabuli":{"low":{"coordinates":[128.4499007,44.7743551],"meters":455},"high":{"coordinates":[128.427448,44.7423097],"meters":1366},"bearing":-131,"sampleCount":339,"notice":"Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."},"alpine":{"low":{"coordinates":[115.783726,40.521761],"meters":906},"high":{"coordinates":[115.8136566,40.5589126],"meters":2179},"bearing":35,"sampleCount":1167,"notice":"Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."},"fulong":{"low":{"coordinates":[115.2993467,40.9765788],"meters":1294},"high":{"coordinates":[115.3080422,40.9609455],"meters":1709},"bearing":-179,"sampleCount":445,"notice":"Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."},"yunding":{"low":{"coordinates":[115.4309771,40.9374967],"meters":1656},"high":{"coordinates":[115.4066615,40.9504288],"meters":2100},"bearing":-73,"sampleCount":338,"notice":"Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."},"wanfeng":{"low":{"coordinates":[125.9614881,41.6535269],"meters":415},"high":{"coordinates":[125.9540235,41.637003],"meters":941},"bearing":-168,"sampleCount":255,"notice":"Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."},"wanda":{"low":{"coordinates":[127.4811038,42.1110279],"meters":842},"high":{"coordinates":[127.4878573,42.0987006],"meters":1213},"bearing":-117,"sampleCount":236,"notice":"Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."},"aoshan":{"low":{"coordinates":[107.3921863,34.0290178],"meters":1817},"high":{"coordinates":[107.3994702,34.0064563],"meters":2620},"bearing":-175,"sampleCount":195,"notice":"Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."},"thaiwoo":{"low":{"coordinates":[115.4453369,40.8891005],"meters":1656},"high":{"coordinates":[115.4293319,40.8753572],"meters":2162},"bearing":-137,"sampleCount":192,"notice":"Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."},"silkroad":{"low":{"coordinates":[87.4134896,43.4430605],"meters":1854},"high":{"coordinates":[87.4642371,43.406075],"meters":2939},"bearing":146,"sampleCount":170,"notice":"Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."},"galaxy":{"low":{"coordinates":[115.3016208,40.9982438],"meters":1327},"high":{"coordinates":[115.3163515,40.9968591],"meters":1632},"bearing":88,"sampleCount":221,"notice":"Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."},"nanshan":{"low":{"coordinates":[116.8539489,40.3307965],"meters":87},"high":{"coordinates":[116.8558717,40.3245264],"meters":243},"bearing":170,"sampleCount":170,"notice":"Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."},"miaoxiangshan":{"low":{"coordinates":[125.883399,43.9577649],"meters":282},"high":{"coordinates":[125.8859672,43.9509296],"meters":466},"bearing":169,"sampleCount":92,"notice":"Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."},"huaibei":{"low":{"coordinates":[116.6557111,40.444326],"meters":142},"high":{"coordinates":[116.6456033,40.4469782],"meters":309},"bearing":-68,"sampleCount":89,"notice":"Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."},"yuyang":{"low":{"coordinates":[117.1385847,40.0773506],"meters":74},"high":{"coordinates":[117.1440585,40.0663654],"meters":314},"bearing":164,"sampleCount":44,"notice":"Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."},"shijinglong":{"low":{"coordinates":[115.9621419,40.5224316],"meters":526},"high":{"coordinates":[115.9594826,40.5307681],"meters":820},"bearing":-26,"sampleCount":29,"notice":"Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."},"jundushan":{"low":{"coordinates":[116.3234675,40.2348426],"meters":105},"high":{"coordinates":[116.3250804,40.2423455],"meters":344},"bearing":-7,"sampleCount":33,"notice":"Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."}}
+{
+  "jikepulin": {
+    "low": {
+      "coordinates": [
+        87.5335188,
+        48.5853971
+      ],
+      "meters": 1381
+    },
+    "high": {
+      "coordinates": [
+        87.5540669,
+        48.6295045
+      ],
+      "meters": 2757
+    },
+    "bearing": 10,
+    "sampleCount": 1241,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "koktokay": {
+    "low": {
+      "coordinates": [
+        90.0035886,
+        47.1885452
+      ],
+      "meters": 1671
+    },
+    "high": {
+      "coordinates": [
+        90.0901024,
+        47.1669622
+      ],
+      "meters": 3071
+    },
+    "bearing": 99,
+    "sampleCount": 342,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "beidahu": {
+    "low": {
+      "coordinates": [
+        126.6065953,
+        43.4213628
+      ],
+      "meters": 502
+    },
+    "high": {
+      "coordinates": [
+        126.6546794,
+        43.4114331
+      ],
+      "meters": 1393
+    },
+    "bearing": 121,
+    "sampleCount": 877,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "songhuahu": {
+    "low": {
+      "coordinates": [
+        126.6137595,
+        43.6854454
+      ],
+      "meters": 315
+    },
+    "high": {
+      "coordinates": [
+        126.6201156,
+        43.6604865
+      ],
+      "meters": 907
+    },
+    "bearing": 163,
+    "sampleCount": 644,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "xueruyi": {
+    "low": {
+      "coordinates": [
+        115.4712087,
+        40.9165126
+      ],
+      "meters": 1668
+    },
+    "high": {
+      "coordinates": [
+        115.4894824,
+        40.9314423
+      ],
+      "meters": 2128
+    },
+    "bearing": 41,
+    "sampleCount": 354,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "wanlong": {
+    "low": {
+      "coordinates": [
+        115.3719283,
+        40.9666965
+      ],
+      "meters": 1534
+    },
+    "high": {
+      "coordinates": [
+        115.3971861,
+        40.9542702
+      ],
+      "meters": 2103
+    },
+    "bearing": 135,
+    "sampleCount": 422,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "jiangjunshan": {
+    "low": {
+      "coordinates": [
+        88.1423094,
+        47.8104654
+      ],
+      "meters": 847
+    },
+    "high": {
+      "coordinates": [
+        88.1679387,
+        47.8283762
+      ],
+      "meters": 1313
+    },
+    "bearing": 50,
+    "sampleCount": 324,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "yabuli": {
+    "low": {
+      "coordinates": [
+        128.4499007,
+        44.7743551
+      ],
+      "meters": 455
+    },
+    "high": {
+      "coordinates": [
+        128.427448,
+        44.7423097
+      ],
+      "meters": 1366
+    },
+    "bearing": -131,
+    "sampleCount": 339,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "alpine": {
+    "low": {
+      "coordinates": [
+        115.783726,
+        40.521761
+      ],
+      "meters": 906
+    },
+    "high": {
+      "coordinates": [
+        115.8136566,
+        40.5589126
+      ],
+      "meters": 2179
+    },
+    "bearing": 35,
+    "sampleCount": 1167,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "fulong": {
+    "low": {
+      "coordinates": [
+        115.2993467,
+        40.9765788
+      ],
+      "meters": 1294
+    },
+    "high": {
+      "coordinates": [
+        115.3080422,
+        40.9609455
+      ],
+      "meters": 1709
+    },
+    "bearing": -179,
+    "sampleCount": 445,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "yunding": {
+    "low": {
+      "coordinates": [
+        115.4309771,
+        40.9374967
+      ],
+      "meters": 1656
+    },
+    "high": {
+      "coordinates": [
+        115.4066615,
+        40.9504288
+      ],
+      "meters": 2100
+    },
+    "bearing": -73,
+    "sampleCount": 338,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "wanfeng": {
+    "low": {
+      "coordinates": [
+        125.9614881,
+        41.6535269
+      ],
+      "meters": 415
+    },
+    "high": {
+      "coordinates": [
+        125.9540235,
+        41.637003
+      ],
+      "meters": 941
+    },
+    "bearing": -168,
+    "sampleCount": 255,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "wanda": {
+    "low": {
+      "coordinates": [
+        127.4811038,
+        42.1110279
+      ],
+      "meters": 842
+    },
+    "high": {
+      "coordinates": [
+        127.4878573,
+        42.0987006
+      ],
+      "meters": 1213
+    },
+    "bearing": -117,
+    "sampleCount": 236,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "aoshan": {
+    "low": {
+      "coordinates": [
+        107.3921863,
+        34.0290178
+      ],
+      "meters": 1817
+    },
+    "high": {
+      "coordinates": [
+        107.3994702,
+        34.0064563
+      ],
+      "meters": 2620
+    },
+    "bearing": -175,
+    "sampleCount": 195,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "thaiwoo": {
+    "low": {
+      "coordinates": [
+        115.4453369,
+        40.8891005
+      ],
+      "meters": 1656
+    },
+    "high": {
+      "coordinates": [
+        115.4293319,
+        40.8753572
+      ],
+      "meters": 2162
+    },
+    "bearing": -137,
+    "sampleCount": 192,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "silkroad": {
+    "low": {
+      "coordinates": [
+        87.4134896,
+        43.4430605
+      ],
+      "meters": 1854
+    },
+    "high": {
+      "coordinates": [
+        87.4642371,
+        43.406075
+      ],
+      "meters": 2939
+    },
+    "bearing": 146,
+    "sampleCount": 170,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "galaxy": {
+    "low": {
+      "coordinates": [
+        115.3016208,
+        40.9982438
+      ],
+      "meters": 1327
+    },
+    "high": {
+      "coordinates": [
+        115.3163515,
+        40.9968591
+      ],
+      "meters": 1632
+    },
+    "bearing": 88,
+    "sampleCount": 221,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "nanshan": {
+    "low": {
+      "coordinates": [
+        116.8539489,
+        40.3307965
+      ],
+      "meters": 87
+    },
+    "high": {
+      "coordinates": [
+        116.8558717,
+        40.3245264
+      ],
+      "meters": 243
+    },
+    "bearing": 170,
+    "sampleCount": 170,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "miaoxiangshan": {
+    "low": {
+      "coordinates": [
+        125.883399,
+        43.9577649
+      ],
+      "meters": 282
+    },
+    "high": {
+      "coordinates": [
+        125.8859672,
+        43.9509296
+      ],
+      "meters": 466
+    },
+    "bearing": 169,
+    "sampleCount": 92,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "huaibei": {
+    "low": {
+      "coordinates": [
+        116.6557111,
+        40.444326
+      ],
+      "meters": 142
+    },
+    "high": {
+      "coordinates": [
+        116.6456033,
+        40.4469782
+      ],
+      "meters": 309
+    },
+    "bearing": -68,
+    "sampleCount": 89,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "yuyang": {
+    "low": {
+      "coordinates": [
+        117.1385847,
+        40.0773506
+      ],
+      "meters": 74
+    },
+    "high": {
+      "coordinates": [
+        117.1440585,
+        40.0663654
+      ],
+      "meters": 314
+    },
+    "bearing": 164,
+    "sampleCount": 44,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "shijinglong": {
+    "low": {
+      "coordinates": [
+        115.9621419,
+        40.5224316
+      ],
+      "meters": 526
+    },
+    "high": {
+      "coordinates": [
+        115.9594826,
+        40.5307681
+      ],
+      "meters": 820
+    },
+    "bearing": -26,
+    "sampleCount": 29,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "jundushan": {
+    "low": {
+      "coordinates": [
+        116.3234675,
+        40.2348426
+      ],
+      "meters": 105
+    },
+    "high": {
+      "coordinates": [
+        116.3250804,
+        40.2423455
+      ],
+      "meters": 344
+    },
+    "bearing": -7,
+    "sampleCount": 33,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "jp-kagura": {
+    "low": {
+      "coordinates": [
+        138.7736322,
+        36.8966698
+      ],
+      "meters": 619
+    },
+    "high": {
+      "coordinates": [
+        138.7143543,
+        36.8569779
+      ],
+      "meters": 1841
+    },
+    "bearing": -136,
+    "sampleCount": 961,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "jp-joetsu": {
+    "low": {
+      "coordinates": [
+        138.8270966,
+        37.0307164
+      ],
+      "meters": 224
+    },
+    "high": {
+      "coordinates": [
+        138.771231,
+        37.0178413
+      ],
+      "meters": 926
+    },
+    "bearing": -110,
+    "sampleCount": 797,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "jp-maiko": {
+    "low": {
+      "coordinates": [
+        138.8224874,
+        36.9891351
+      ],
+      "meters": 260
+    },
+    "high": {
+      "coordinates": [
+        138.840658,
+        36.9612893
+      ],
+      "meters": 902
+    },
+    "bearing": 149,
+    "sampleCount": 666,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "jp-gala": {
+    "low": {
+      "coordinates": [
+        138.799227,
+        36.9503456
+      ],
+      "meters": 359
+    },
+    "high": {
+      "coordinates": [
+        138.7697321,
+        36.9432723
+      ],
+      "meters": 1179
+    },
+    "bearing": -101,
+    "sampleCount": 760,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "jp-naeba": {
+    "low": {
+      "coordinates": [
+        138.7835079,
+        36.8019873
+      ],
+      "meters": 888
+    },
+    "high": {
+      "coordinates": [
+        138.7582723,
+        36.7895252
+      ],
+      "meters": 1774
+    },
+    "bearing": -108,
+    "sampleCount": 495,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "jp-ishiuchi": {
+    "low": {
+      "coordinates": [
+        138.8025347,
+        36.9784912
+      ],
+      "meters": 263
+    },
+    "high": {
+      "coordinates": [
+        138.7825292,
+        36.961479
+      ],
+      "meters": 912
+    },
+    "bearing": -141,
+    "sampleCount": 504,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "jp-kandatsu": {
+    "low": {
+      "coordinates": [
+        138.8133037,
+        36.9107627
+      ],
+      "meters": 481
+    },
+    "high": {
+      "coordinates": [
+        138.8065717,
+        36.8959368
+      ],
+      "meters": 966
+    },
+    "bearing": -171,
+    "sampleCount": 443,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "jp-hakkaisan": {
+    "low": {
+      "coordinates": [
+        138.9776596,
+        37.1080207
+      ],
+      "meters": 356
+    },
+    "high": {
+      "coordinates": [
+        138.9925539,
+        37.1246148
+      ],
+      "meters": 1165
+    },
+    "bearing": 43,
+    "sampleCount": 344,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "jp-iwappara": {
+    "low": {
+      "coordinates": [
+        138.8408589,
+        36.9324801
+      ],
+      "meters": 399
+    },
+    "high": {
+      "coordinates": [
+        138.8383197,
+        36.9541956
+      ],
+      "meters": 983
+    },
+    "bearing": -10,
+    "sampleCount": 293,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "jp-nakazato": {
+    "low": {
+      "coordinates": [
+        138.8500587,
+        36.9164474
+      ],
+      "meters": 464
+    },
+    "high": {
+      "coordinates": [
+        138.855886,
+        36.9067742
+      ],
+      "meters": 693
+    },
+    "bearing": 136,
+    "sampleCount": 160,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "jp-kogen": {
+    "low": {
+      "coordinates": [
+        138.8020574,
+        36.9433095
+      ],
+      "meters": 351
+    },
+    "high": {
+      "coordinates": [
+        138.7855887,
+        36.9281981
+      ],
+      "meters": 1148
+    },
+    "bearing": -139,
+    "sampleCount": 316,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "jp-muica": {
+    "low": {
+      "coordinates": [
+        138.8468022,
+        37.0712512
+      ],
+      "meters": 335
+    },
+    "high": {
+      "coordinates": [
+        138.8306807,
+        37.0764922
+      ],
+      "meters": 676
+    },
+    "bearing": -59,
+    "sampleCount": 138,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "jp-chateau": {
+    "low": {
+      "coordinates": [
+        138.8386783,
+        37.0515187
+      ],
+      "meters": 266
+    },
+    "high": {
+      "coordinates": [
+        138.8182345,
+        37.0575723
+      ],
+      "meters": 570
+    },
+    "bearing": -68,
+    "sampleCount": 151,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "jp-park": {
+    "low": {
+      "coordinates": [
+        138.8552203,
+        36.9260861
+      ],
+      "meters": 449
+    },
+    "high": {
+      "coordinates": [
+        138.8605571,
+        36.9218966
+      ],
+      "meters": 633
+    },
+    "bearing": 114,
+    "sampleCount": 188,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "jp-naspa": {
+    "low": {
+      "coordinates": [
+        138.8094449,
+        36.9265453
+      ],
+      "meters": 435
+    },
+    "high": {
+      "coordinates": [
+        138.8015968,
+        36.9265367
+      ],
+      "meters": 682
+    },
+    "bearing": -96,
+    "sampleCount": 140,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "jp-sanroku": {
+    "low": {
+      "coordinates": [
+        138.9745134,
+        37.1553572
+      ],
+      "meters": 213
+    },
+    "high": {
+      "coordinates": [
+        138.9783253,
+        37.1612155
+      ],
+      "meters": 409
+    },
+    "bearing": 20,
+    "sampleCount": 86,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "jp-snowwood": {
+    "low": {
+      "coordinates": [
+        138.8502252,
+        36.905385
+      ],
+      "meters": 496
+    },
+    "high": {
+      "coordinates": [
+        138.8577313,
+        36.9035299
+      ],
+      "meters": 676
+    },
+    "bearing": 109,
+    "sampleCount": 19,
+    "notice": "Extrema of mapped piste vertices sampled from Terrarium DEM at z12 (~20–30m). Not surveyed resort extrema."
+  },
+  "jp-ipponsugi": {
+    "notice": "No mapped downhill vertices; elevation extrema unavailable."
+  }
+}
